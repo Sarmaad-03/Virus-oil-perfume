@@ -1,0 +1,117 @@
+{% extends "main/admin/admin_base.html" %}
+{% load django_template_maths %}
+{% load static %}
+
+
+		{% block content %}
+
+		
+			<div class="xs-pd-20-10 pd-ltr-20">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>Клиенты</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url "admin_home" %}">Главная страница</a></li>
+									<li class="breadcrumb-item active" aria-current="page">
+										Клиенты
+									</li>
+								</ol>
+							</nav>
+						</div>
+						
+					</div>
+				</div>
+		
+				<hr>
+				
+				<div class="pd-20 card-box mb-30">
+					<h2>Список клиентов - ({{all_customers.count}})</h2>
+					<hr>
+					<table class="table table-bordered">
+						<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Имя</th>
+							
+							<th scope="col">Дата Рождения</th>
+							<th scope="col">Купленный парфюм</th>
+							<th scope="col">Подарки</th>
+							<th scope="col">Заплатил</th>
+							<th scope="col">Узнать больше</th>
+							<th scope="col">Удалить</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for j in prod_pag %}
+						<tr>
+							
+							<th scope="row">{{ forloop.counter }}</th>
+							<th scope="row">{{j.first_name}} {{j.last_name}}</th>
+						
+							<th scope="row">{{j.birthday|date:'d.m.Y'}}</th>
+							
+
+							{% if j.purchases.all.count|mod:5 == 0 and j.purchases.all.count != 0 %}
+								<th style='color: red;' scope="row"><a style='color: red;' href={% url "admin_give_gift" j.id %}>{{j.purchases.all.count}}(+1 Подарок)</a></th>
+
+							{% else %}
+								<th scope="row">{{j.purchases.all.count}}</th>
+							{% endif %}
+							<th scope="row">{{j.gifts.all.count}}</th>
+							<th scope="row">{{j.bought}} TMT</th>
+							<th scope="row"> <a href={% url "admin_customer_detail" j.id %}>...</a></th>
+							<th scope="row"> <a class='btn btn-danger' style='color: white;' href={% url "admin_customer_delete" j.id %}>Удалить</a></th>
+							
+						</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+
+				<hr>
+				<div class="btn-toolbar justify-content-center mb-15">
+					<div class="btn-group">
+						{% if prod_pag.has_previous %}
+						<a href="?page={{ prod_pag.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
+						{% else %}
+						<a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
+						{% endif %}
+						
+						{% for i in prod_pag.paginator.page_range %}
+
+							{% if prod_pag.number == i %}
+							<span class="btn btn-primary current">{{i}}</span>
+							
+							{% else %}
+							<a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
+							
+							{% endif %}
+
+						{% endfor %}
+
+						{% if prod_pag.has_next %}
+						<a href="?page={{ prod_pag.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
+						{% else %}
+						<a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
+						{% endif %}
+					</div>
+				</div>
+
+				</div>
+							  
+
+
+					
+				<div class="footer-wrap pd-20 mb-20 card-box">
+					Virus Oil Parfume - Admin Panel
+ 
+				</div>
+			</div>
+		
+
+		{% endblock %}
+
+	

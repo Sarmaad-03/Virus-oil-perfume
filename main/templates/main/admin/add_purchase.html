@@ -1,0 +1,99 @@
+{% extends "main/admin/admin_base.html" %}
+
+{% load static %}
+
+
+		{% block content %}
+
+		
+			<div class="xs-pd-20-10 pd-ltr-20">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>Добавить сделку</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url "admin_home" %}">Главная страница</a></li>
+									<li class="breadcrumb-item active" aria-current="page">
+										Добавить сделку
+									</li>
+								</ol>
+							</nav>
+						</div>	
+					</div>
+				</div>
+				<hr>
+                <div class="pd-20 card-box mb-30">
+					<div class="clearfix">
+						<div class="pull-left">
+							<h4 class="text-blue h4">Форма добавления сделки</h4>
+							<p class="mb-30">Заполните все бланки</p>
+						</div>
+					</div>
+                    <a href="{% url "admin_add_customer" %}" style='color: white;' class="btn btn-primary btn-lg btn-block">
+                        Новый клиент
+                    </a>
+                    <hr>
+					{% comment %} <form method='POST'  action={% url "admin_make_purchase" %}>{% csrf_token %} {% endcomment %}
+						<div>
+							{% for i in form.errors %}
+								{{i}}
+							{% endfor %}
+						</div>
+						
+							
+
+						<form id="search-form-mu">{% csrf_token %}
+							
+								<div class="form-group row">
+									<label class="col-sm-12 col-md-2 col-form-label">Выберите клиента</label>
+									<div class="col-sm-12 col-md-10">
+										<input type="text" class='form-control' id="user-search-input-mu" autocomplete="off" placeholder="Найти пользователя..." requird>
+										<div id="user-suggestions-mu"></div>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-12 col-md-2 col-form-label">Выберите клиента</label>
+									<div class="col-sm-12 col-md-10">
+										<input type="text" class='form-control' id="perfume-search-input-mu" autocomplete="off" placeholder="Найти парфюм..." requird>
+										<div id="perfume-suggestions-mu"></div>
+									</div>
+								</div>
+							<button class='btn btn-success btn-lg btn-block' type="submit">Submit</button>
+						</form>
+								
+								
+								
+						
+								
+							
+						</div>
+						
+					</div>
+						
+						{% comment %} <button type="submit" class="btn btn-success btn-lg btn-block">
+							Потвердить
+						</button> {% endcomment %}
+					</form>
+			
+							  
+				<hr>
+
+				
+				<div class="footer-wrap pd-20 mb-20 card-box">
+					Virus Oil Parfume - Admin Panel
+ 
+				</div>
+			</div>
+			<script src="{% static "main/admin/search.js" %}"></script>
+
+{% comment %} <script>
+		
+</script>  {% endcomment %}
+
+
+		{% endblock %}
+
+	

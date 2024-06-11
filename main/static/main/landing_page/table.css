@@ -1,0 +1,112 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  position: relative;
+  background-color: #f0d5a3; /* Цвет мутного эффекта */
+  backdrop-filter: blur(10px); /* Размытие фильтра */
+  
+}
+
+table, th, td {
+  border: 1px solid #7d612c;
+  text-align: center
+  
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #7d612c;
+  color: white;
+  text-align: center
+}
+
+.price-column {
+  text-align: center;
+
+}
+
+.show-variations-button {
+  
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+
+.price-variations {
+  display: none;
+  border-radius: 10px;
+  display: none;
+  background-color: #7d612c;
+  color: white;
+  width: 145px;
+  margin: auto;
+  border: 2px solid black;
+  font-size: 16px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  th {
+    display: none;
+  }
+
+  td {
+    border: none;
+    border-bottom: 1px solid #7d612c;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td:before {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    /* width: 45%; */
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  td:nth-of-type(1):before {
+    content: "#";
+  }
+
+  td:nth-of-type(2):before {
+    content: "Бренд:";
+  }
+
+  td:nth-of-type(3):before {
+    content: "Имя:";
+  }
+  td:nth-of-type(4):before {
+    content: "Т.вода:";
+  }
+
+  td:nth-of-type(5):before {
+    content: "Категория:";
+  }
+
+  td:nth-of-type(6):before {
+    content: "Цена:";
+  }
+
+  .price-column {
+    text-align: left;
+  }
+}
+

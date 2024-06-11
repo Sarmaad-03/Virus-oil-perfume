@@ -1,0 +1,120 @@
+{% extends "main/admin/admin_base.html" %}
+
+{% load django_template_maths %}
+{% load static %}
+
+
+		{% block content %}
+
+        <div class="xs-pd-20-10 pd-ltr-20">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="title">
+                            <h4>Детали покупателя</h4>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url "admin_home" %}">Главная страница</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    Детали покупателя
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    
+                </div>
+            </div>
+    
+            <hr>
+            
+            <div class="pd-20 card-box mb-30">
+                <h2>Полная информация {{customer.first_name}} {{customer.last_name}}</h2>
+                <hr>
+                <div class="pd-20 card-box">
+                    <h4 class="mb-30 h4">Описание</h4>
+                    <dl class="row">
+                        <dt class="col-sm-3">Полное имя</dt>
+                        <dd class="col-sm-9">
+                            {{customer.first_name}} {{customer.last_name}}
+                        </dd>
+
+                        <dt class="col-sm-3">Номер телефона</dt>
+                        <dd class="col-sm-9">
+                            {{customer.number}}
+                        </dd>
+                        
+                        <dt class="col-sm-3">Дата Рождения</dt>
+                        <dd class="col-sm-9">
+                            <p>
+                                {{customer.birthday|date:'d.m.Y'}}
+                            </p>
+                            
+                        </dd>
+
+                        <dt class="col-sm-3">Заплатил</dt>
+                        <dd class="col-sm-9">
+                            {{customer.bought}} TMT
+                        </dd>
+
+                        <dt class="col-sm-3 text-truncate">
+                            Купленный парфюм 
+                            <p>Количество - ({{customer.purchases.all.count}}) </p>
+                        </dt>
+                        <dd class="col-sm-9">
+                            <ul class="list-group">
+                                {% for i in customer.purchases.all %}
+                                <li class="list-group-item">{{i.parfume}} |  {{i.parfume.price}} TMT</li>
+                                {% endfor %}
+
+                            </ul>
+
+                            
+                                
+                            
+                        </dd>
+                        <dt class="col-sm-3 text-truncate">
+                            Подарки 
+                            <p>Количество - ({{customer.gifts.all.count}}) </p>
+                        </dt>
+                        {% if customer.gifts %}
+                            <dd class="col-sm-9">
+                                <ul class="list-group">
+                                    {% for i in customer.gifts.all %}
+                                    <li class="list-group-item">{{i.parfume}} |  {{i.parfume.price}} TMT</li>
+                                    {% endfor %}
+
+                                </ul>
+                            </dd>
+                        {% else %}
+                            <dd class="col-sm-9">
+                                <ul class="list-group">
+                                    
+                                    <li class="list-group-item">Пусто</li>
+                                    
+                                </ul>
+                            </dd>
+                        {% endif %}
+
+
+                        
+                    </dl>
+                </div>
+
+            <hr>
+            </div>
+                          
+
+
+                
+            <div class="footer-wrap pd-20 mb-20 card-box">
+                Virus Oil Parfume - Admin Panel
+
+            </div>
+        </div>
+    
+
+    {% endblock %}
+
+
+

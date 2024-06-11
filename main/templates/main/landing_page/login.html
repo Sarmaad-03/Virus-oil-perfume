@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>{{title}}</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static "main/landing_page/css/bootstrap.css" %}" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{% static "main/landing_page/css/style.css" %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static "main/landing_page/css/responsive.css" %}" rel="stylesheet" />
+</head>
+
+<body >
+  <div class="hero_area ">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url "web.home" %}">
+            
+            <span style='color: #7d612c'>
+              Virus Oil
+            </span>
+    
+          </a>
+          <div class="" id="">
+          
+            <div class="custom_menu-btn">
+              <button onclick="openNav()">
+                <span class="s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+            <div id="myNav" style='background-color: #f0d5a3' class="overlay">
+              <div class="overlay-content">
+                <a style='color: f0d5a3;' href="{% url "web.home" %}">Главная страница</a>
+                <a style='color: f0d5a3;' href="{% url "web.catalog" %}">Каталог</a>
+                
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <section class="contact_section layout_padding">
+      <div class="container ">
+        <h2 class="">
+          Регистрация
+        </h2>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-lg-6 mx-auto">
+            <form action="{% url "web.login" %}" method='POST'>{% csrf_token %}
+              <div>
+                <input style='background-color:grey;' name='username' type="text" placeholder="Login" />
+              </div>
+              <div>
+                <input style='background-color:grey;' name='password' type="password" placeholder="Password" />
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type='submit'>
+                  Потвердить
+                </button>
+              </div>
+            </form>
+          </div>
+  
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- info section -->
+
+  <section class="info_section layout_padding" id = 'contact_us'>
+    <div class="container">
+      <div class="info_social-container">
+        <h5>
+          Наши каналы
+        </h5>
+        <div class="info_social">
+       
+          <div>
+            <a href="">
+              <img src="{% static "main/landing_page/images/instagram.png" %}" alt="">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h6>
+            О сайте
+          </h6>
+          <p>
+            Погрузитесь в наш уникальный ароматический мир и обнаружьте новые грани своего восприятия с "Virus Oil Perfume"!
+          </p>
+        </div>
+        <div class="col-md-2 offset-lg-1">
+          <h6>
+            Все меню
+          </h6>
+          <ul>
+            <li class=" active">
+              <a class="" href="{% url 'web.home' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="">
+              <a class="" href="#more_us">About </a>
+            </li>
+            <li class="">
+              <a class="" href="{% url "web.catalog" %}">Catalog </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h6>
+            Ссылки
+          </h6>
+          <ul>
+            <li>
+              <a href="{% url "web.login" %}">
+                Stuff Link
+              </a>
+            </li>
+            <li>
+              <a href="">
+                Elit, sed
+              </a>
+            </li>
+            <li>
+              <a href="">
+                do Eiusmod
+              </a>
+            </li>
+            <li>
+              <a href="">
+                Tempor
+              </a>
+            </li>
+            <li>
+              <a href="">
+                incididunt
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <h6>
+            Свяжитесь с нами
+          </h6>
+          <div class="info_link-box">
+            <a href="">
+              <img src="{% static "main/landing_page/images/location-white.png" %}" alt="">
+              <span> Turkmenbashy</span>
+            </a>
+            <a href="">
+              <img src="{% static "main/landing_page/images/call-white.png" %}" alt="">
+              <span>+993 65 656565</span>
+            </a>
+            <a href="">
+              <img src="{% static "main/landing_page/images/mail-white.png" %}" alt="">
+              <span> VirusOilPerfume@gmail.com</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end info section -->
+
+
+  <!-- footer section -->
+
+  <!-- end  footer section -->
+
+
+  <script type="text/javascript" src="{% static "main/landing_page/js/jquery-3.4.1.min.js" %}"></script>
+  <script type="text/javascript" src="{% static 'main/landing_page/js/bootstrap.js' %}"></script>
+  <script type="text/javascript" src="{% static "main/landing_page/js/custom.js" %}"></script>
+
+
+
+</body>
+
+</html>

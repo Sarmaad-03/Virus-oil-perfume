@@ -1,0 +1,121 @@
+{% extends "main/admin/admin_base.html" %}
+
+{% load static %}
+
+
+		{% block content %}
+
+		
+			<div class="xs-pd-20-10 pd-ltr-20">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>Список Парфюма</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url "admin_home" %}">Главная страница</a></li>
+									<li class="breadcrumb-item active" aria-current="page">
+										Список Парфюма
+									</li>
+								</ol>
+							</nav>
+						</div>
+						<div class="col-md-6 col-sm-12 text-right">
+							{% comment %} <div class="dropdown">
+								<a
+									class="btn btn-primary dropdown-toggle"
+									href="#"
+									role="button"
+									data-toggle="dropdown"
+								>
+									January 2018
+								</a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<a class="dropdown-item" href="#">Export List</a>
+									<a class="dropdown-item" href="#">Policies</a>
+									<a class="dropdown-item" href="#">View Assets</a>
+								</div>
+							</div> {% endcomment %}
+						</div>
+					</div>
+				</div>
+		
+
+				<hr>
+				<div class="pd-20 card-box mb-30">
+					<h2>Список Парфюма - ({{all_parfume.count}})</h2>
+					
+					<hr>
+					<table class="table table-bordered">
+						<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Бренд</th>
+							<th scope="col">Имя</th>
+							<th scope="col">Туалетная Вода</th>
+							<th scope="col">Категория</th>
+							<th scope="col">Вариации</th>
+							<th scope="col">Изменить</th>
+							<th scope="col">Удалить</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for i in prod_pag %}
+						<tr>
+							
+							<th scope="row">{{ forloop.counter }}</th>
+							<th scope="row">{{i.brand}}</th>
+							<th scope="row">{{i.name}}</th>
+							<th scope="row"{% if i.toilet_water == 'Нет' %} style='color: red;'>{{i.toilet_water}} {% else %}style='color: green;'> {{i.toilet_water}} {% endif %}</th>
+							<th scope="row">{{i.category}}</th>
+							<th scope="row"><a class='btn btn-success' style='color: white;' href={% url "admin_parfume_volume_list" i.id %}>Смотреть</a></th>
+							<th scope="row"><a class='btn btn-info' style='color: white;' href={% url "admin_edit_parfume" i.id %}>Изменить</a></th>
+							<th scope="row"><a class='btn btn-danger' style='color: white;' href={% url "admin_delete_parfume" i.id %}>Удалить</a></th>
+							
+						</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+					<hr>
+					<div class="btn-toolbar justify-content-center mb-15">
+                        <div class="btn-group">
+                            {% if prod_pag.has_previous %}
+                            <a href="?page={{ prod_pag.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
+                            {% else %}
+                            <a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
+                            {% endif %}
+                            
+                            {% for i in prod_pag.paginator.page_range %}
+
+                                {% if prod_pag.number == i %}
+                                <span class="btn btn-primary current">{{i}}</span>
+                                
+                                {% else %}
+                                <a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
+                                
+                                {% endif %}
+
+                            {% endfor %}
+
+                            {% if prod_pag.has_next %}
+                            <a href="?page={{ prod_pag.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
+                            {% else %}
+                            <a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+				</div>
+
+					
+				<div class="footer-wrap pd-20 mb-20 card-box">
+					Virus Oil Parfume - Admin Panel
+ 
+				</div>
+			</div>
+		
+
+		{% endblock %}
+
+	

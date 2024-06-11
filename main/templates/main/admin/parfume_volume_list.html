@@ -1,0 +1,90 @@
+{% extends "main/admin/admin_base.html" %}
+
+{% load static %}
+
+
+		{% block content %}
+
+		
+			<div class="xs-pd-20-10 pd-ltr-20">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>Список Вариации</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url "admin_home" %}">Главная страница</a></li>
+									<li class="breadcrumb-item active" aria-current="page">
+										Список Вариации
+									</li>
+								</ol>
+							</nav>
+						</div>
+						<div class="col-md-6 col-sm-12 text-right">
+							{% comment %} <div class="dropdown">
+								<a
+									class="btn btn-primary dropdown-toggle"
+									href="#"
+									role="button"
+									data-toggle="dropdown"
+								>
+									January 2018
+								</a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<a class="dropdown-item" href="#">Export List</a>
+									<a class="dropdown-item" href="#">Policies</a>
+									<a class="dropdown-item" href="#">View Assets</a>
+								</div>
+							</div> {% endcomment %}
+						</div>
+					</div>
+				</div>
+		
+
+				<hr>
+				<div class="pd-20 card-box mb-30">
+					<h2>Вариации - "{{parfume.name}}" by {{parfume.brand}}   ({{parfume.volumes.all.count}})</h2>
+					
+					<hr>
+					<table class="table table-bordered">
+						<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Объем в Мл</th>
+							<th scope="col">Цена</th>
+							<th scope="col">Изменить</th>
+							<th scope="col">Удалить</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for i in parfume.volumes.all %}
+						<tr>
+							
+							<th scope="row">{{ forloop.counter }}</th>
+							<th scope="row">{{i.volum_ml}} ml</th>
+							<th scope="row">{{i.price}} TMT</th>
+							<th scope="row"><a class='btn btn-info' style='color: white;' href={% url "admin_edit_volume" i.id %}>Изменить</a></th>
+							<th scope="row"><a class='btn btn-danger' style='color: white;' href={% url "admin_delete_volume" i.id %}>Удалить</a></th>							
+						</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+					<hr>
+					<a href="{% url "admin_add_volume" parfume.id %}" style="color: white;" class="btn btn-primary btn-lg btn-block">
+                        Добавить вариацию
+                    </a>
+				</div>
+
+					
+				<div class="footer-wrap pd-20 mb-20 card-box">
+					Virus Oil Parfume - Admin Panel
+ 
+				</div>
+			</div>
+		
+
+		{% endblock %}
+
+	

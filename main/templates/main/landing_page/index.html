@@ -1,0 +1,485 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>{{title}}</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static "main/landing_page/css/bootstrap.css" %}" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{% static "main/landing_page/css/style.css" %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static "main/landing_page/css/responsive.css" %}" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="hero_area ">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url "web.home" %}">
+            
+            <span style='color: #7d612c'>
+              Virus Oil
+            </span>
+     
+          </a>
+          <div class="" id="">
+          
+            <div class="custom_menu-btn">
+              <button onclick="openNav()">
+                <span class="s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+            <div id="myNav" style='background-color: #f0d5a3' class="overlay">
+              <div class="overlay-content">
+                <a style='color: f0d5a3;' href="{% url "web.home" %}">Главная страница</a>
+                <a style='color: f0d5a3;' href="{% url "web.catalog" %}">Каталог</a>
+                
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class="slider_section">
+      <div class="side-img">
+        <img src="{% static 'main/landing_page/images/side-img.png' %}" alt="">
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="detail-box">
+              <img src="{% static 'main/landing_page/images/virus_logo.svg' %}" class='logo-virus'>
+
+              
+              {% comment %} <h2 style="font-family:Bodoni Bd BT; color: #7d612c">
+                Virus Oil
+              </h2>
+              <h2 style="font-family:Segoe Script; color: #7d612c ">
+                Per<span style="color: black">fume</span>
+              </h2> {% endcomment %}
+              <a href="#more_us">
+                Подробнее о нас
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            {% if carousel %}
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                
+
+                {% comment %} <div class="carousel-item active">
+                  <div class="img-box">
+                    <img src="{{one_object.img.url}}" alt="one_object.name">
+                  </div>
+                </div> {% endcomment %}
+                {% for c in carousel %}
+                <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                  <div class="img-box">
+                    <img src="{{c.img.url}}" alt="{{c.name}}">
+                  </div>
+                </div>
+                {% endfor %}
+              
+                
+              </div>
+              <div class="carousel_btn-container">
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              {% endif %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end slider section -->
+  </div>
+
+  <!-- product section -->
+
+  <section class="product_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Разливы
+        </h2>
+      </div>
+
+      <div class="product_container">
+        {% for b in all_bottles %}
+        <div class="box">
+          <div class="img-box">
+            <img src="{{b.img.url}}" alt="">
+          </div>
+          <div class="detail-box">
+            <h5>
+              {{b.name}}
+            </h5>
+            
+          </div>
+        </div>
+        {% endfor %}
+
+        
+      
+       
+      </div>
+      <div class="btn-box">
+        <a href="{% url "web.catalog" %}">
+          Просмотреть каталог
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- end product section -->
+
+  <!-- about section -->
+
+  <section style='background-color: #f0d5a3' class="about_section layout_padding" id = 'more_us'>
+    <div class="container" >
+      <div class="row">
+        <div class="col-md-6" >
+          <div class="detail-box">
+            <div class="heading_container" >
+              <h2>
+                О нашей продукции
+              </h2>
+            </div>
+            <p>
+              Мы гордимся нашим богатым ассортиментом уникальных ароматов, разработанных профессиональными парфюмерами с использованием только самых качественных ингредиентов. От свежих цитрусовых и цветочных нот до глубоких древесных и восточных ароматов - у нас есть что-то для каждого вкуса и настроения.
+            </p>
+            <a href="#more_us2">
+              Подробнее
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src="{% static "main/landing_page/images/about.png" %}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end about section -->
+
+  <!-- us section -->
+
+  <section  class="us_section layout_padding" id = 'more_us2'>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="img-box">
+            <img src="{% static "main/landing_page/images/us.png" %}" alt="">
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="detail-box" >
+            <div class="heading_container">
+              <h2>
+                Почему выбирают "Virus Oil Perfume"?
+              </h2>
+            </div>
+            <div class="box">
+              <div class="text-box">
+                <div class="number-box">
+                  <h5>
+                    01
+                  </h5>
+                </div>
+                <h6>
+                  Мы рады подарить каждому клиенту, который покупает 5 парфюмов, еще один аромат абсолютно бесплатно. Это наше специальное предложение, которое делает ваше путешествие в мир ароматов еще более приятным и выгодным.
+                </h6>
+              </div>
+              <div class="text-box">
+                <div class="number-box">
+                  <h5>
+                    02
+                  </h5>
+                </div>
+                <h6>
+                  Наш ассортимент включает в себя широкий выбор уникальных ароматов для мужчин и женщин, чтобы каждый мог найти что-то особенное и неповторимое.
+                </h6>
+              </div>
+              <div class="text-box">
+                <div class="number-box">
+                  <h5>
+                    03
+                  </h5>
+                </div>
+                <h6>
+                  Мы ценим каждого клиента и предлагаем индивидуальный подход к выбору аромата. Наша команда экспертов по парфюмерии всегда готова помочь вам найти идеальный запах, который подчеркнет вашу индивидуальность.
+                </h6>
+              </div>
+            </div>
+            <div class="btn-box">
+              <a href="#contact_us">
+                Связаться
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end us section -->
+
+  <!-- store section -->
+
+  {% if work_img %}
+  <section  class="store_section layout_padding-bottom">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Наш магазин
+        </h2>
+      </div>
+    </div>
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        
+        
+      
+      {% for i in work_img %}
+        <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+          <div class="container">
+            <div class="img-box">
+              <img src="{{i.img.url}}" alt="{{i.name}}">
+            </div>
+          </div>
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{i.desc}} </h5>
+          </div>
+        </div>
+      {% endfor %}
+      
+      {% if work_img.count > 1 %}
+      </div>
+      <div class="carousel_btn-container">
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  <!-- end store section -->
+
+  <!-- blog section -->
+
+
+
+  <!-- end blog section -->
+
+  <!-- client section -->
+{% if workers %}
+  <section  class="client_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Наши работники
+        </h2>
+      </div>
+      <div id="carouselExample3Controls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+        {% for w in workers %}
+          <div class="carousel-item {% if forloop.counter == 1%}active{% endif %}">
+            <div class="box">
+              <div class="img_container">
+                <div class="img-box">
+                  <div class="img_box-inner">
+                    <img src="{{w.img.url}}" alt="{{w.name}}">
+                  </div>
+                </div>
+              </div>
+              <div class="detail-box">
+                <h5>
+                  {{w.name}}
+                </h5>
+                <h6>
+                  {{w.spec}}
+                </h6>
+                <p>
+                  {{w.desc}}
+                </p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        
+        {% if workers.count > 1 %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExample3Controls" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExample3Controls" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+      {% endif %}
+
+    </div>
+  </section>
+{% endif %}
+
+  <!-- end client section -->
+
+
+  <!-- contact section -->
+
+
+
+  <!-- end contact section -->
+
+
+
+  <!-- subscribe section -->
+
+
+  <!-- end subscribe section -->
+
+
+
+  <!-- info section -->
+
+  <section class="info_section layout_padding" id = 'contact_us'>
+    <div class="container">
+      <div class="info_social-container">
+        <h5>
+          Наши каналы
+        </h5>
+        <div class="info_social">
+       
+          <div>
+            <a href="">
+              <img src="{% static "main/landing_page/images/instagram.png" %}" alt="">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h6>
+            О сайте
+          </h6>
+          <p>
+            Погрузитесь в наш уникальный ароматический мир и обнаружьте новые грани своего восприятия с "Virus Oil Perfume"!
+          </p>
+        </div>
+        <div class="col-md-2 offset-lg-1">
+          <h6>
+            Все меню
+          </h6>
+          <ul>
+            <li class=" active">
+              <a class="" href="{% url 'web.home' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="">
+              <a class="" href="#more_us">About </a>
+            </li>
+            <li class="">
+              <a class="" href="{% url "web.catalog" %}">Catalog </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h6>
+            Ссылки
+          </h6>
+          <ul>
+            <li>
+              <a href="{% url "web.login" %}">
+                Stuff Link
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <h6>
+            Свяжитесь с нами
+          </h6>
+          <div class="info_link-box">
+            <a href="https://www.google.com/maps?q=39.99862169016306, 52.989898397930816">
+              <img src="{% static "main/landing_page/images/location-white.png" %}" alt="">
+              <span> Turkmenbashy, 'Shagadam Centre'</span>
+            </a>
+            <a href="tel:+99365656565">
+              <img src="{% static "main/landing_page/images/call-white.png" %}" alt="">
+              <span>+993 65 656565</span>
+            </a>
+            <a href="">
+              <img src="{% static "main/landing_page/images/mail-white.png" %}" alt="">
+              <span> virusOilPerfume@gmail.com</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end info section -->
+
+
+  <!-- footer section -->
+
+  <!-- end  footer section -->
+
+
+  <script type="text/javascript" src="{% static "main/landing_page/js/jquery-3.4.1.min.js" %}"></script>
+  <script type="text/javascript" src="{% static 'main/landing_page/js/bootstrap.js' %}"></script>
+  <script type="text/javascript" src="{% static "main/landing_page/js/custom.js" %}"></script>
+
+
+
+</body>
+
+</html>

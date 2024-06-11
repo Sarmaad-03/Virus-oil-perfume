@@ -1,0 +1,237 @@
+{% extends "main/employer/employer_base.html" %}
+
+{% load django_template_maths %}
+{% load static %}
+
+
+		{% block content %}
+
+		
+			<div class="xs-pd-20-10 pd-ltr-20">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>Главная Страница</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								
+							</nav>
+						</div>
+						<div class="col-md-6 col-sm-12 text-right">
+							{% comment %} <div class="dropdown">
+								<a
+									class="btn btn-primary dropdown-toggle"
+									href="#"
+									role="button"
+									data-toggle="dropdown"
+								>
+									January 2018
+								</a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<a class="dropdown-item" href="#">Export List</a>
+									<a class="dropdown-item" href="#">Policies</a>
+									<a class="dropdown-item" href="#">View Assets</a>
+								</div>
+							</div> {% endcomment %}
+						</div>
+					</div>
+				</div>
+				<div class="row pb-10">
+					<div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+									<div class="weight-700 font-24 text-dark"> {{customers_dob.count}} </div>
+									<div class="font-14 text-secondary weight-500">
+										<a href = '{% url "admin_bd_customers" %}' >Дни рождения клиентов</a> 
+									</div>
+								</div>
+								<div class="widget-icon">
+									<div class="icon" data-color="#00eccf" style="color: rgb(0, 236, 207);">
+										<i class="icon-copy dw dw-calendar1"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+									<div class="weight-700 font-24 text-dark">{{all_customers.count}}</div>
+									<div class="font-14 text-secondary weight-500">
+										<a href = '{% url "admin_customer_list" %}' >Все клиенты</a> 
+									</div>
+								</div>
+								<div class="widget-icon">
+									
+									<div class="icon" data-color="#ff5b5b" style="color: rgb(255, 91, 91);">
+										<span class="icon-copy fa fa-users"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+									<div class="weight-700 font-24 text-dark">{{all_parfume.count}}</div>
+									<div class="font-14 text-secondary weight-500">
+										<a href = '{% url "admin_parfume_list" %}' >Парфюм</a> 
+									</div>
+								</div>
+								<div class="widget-icon">
+									<div class="icon">
+										
+										<i class="icon-copy fi-paint-bucket" aria-hidden="true"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+									<div class="weight-700 font-24 text-dark">{{purchases}}</div>
+									<div class="font-14 text-secondary weight-500"> <a href = '{% url "admin_purchasaes" %}' >Продано</a> </div>
+								</div>
+								<div class="widget-icon">
+									<div class="icon" data-color="#09cc06" style="color: rgb(9, 204, 6);">
+										<i class="icon-copy fa fa-money" aria-hidden="true"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	
+
+				<hr>
+				<div class="pd-20 card-box mb-30">
+					<h2>Список Парфюма в наличие</h2>
+					
+					<hr>
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Бренд</th>
+								<th scope="col">Имя</th>
+								<th scope="col">Туалетная Вода</th>
+								<th scope="col">Категория</th>
+								<th scope="col">Вариации</th>
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+							{% for i in all_parfume %}
+						<tr>
+							
+							<th scope="row">{{ forloop.counter }}</th>
+							<th scope="row">{{i.brand}}</th>
+							<th scope="row">{{i.name}}</th>
+							<th scope="row"{% if i.toilet_water == 'Нет' %} style='color: red;'>{{i.toilet_water}} {% else %}style='color: green;'> {{i.toilet_water}} {% endif %}</th>
+							<th scope="row">{{i.category}}</th>
+							<th scope="row"><a class='btn btn-success' style='color: white;' href="{% url "employer_parfume_volume_list" i.id %}">Смотреть</a></th>
+							
+							
+							
+						</tr>
+						{% endfor %}
+							</tbody>
+					</table>
+				</div>
+										
+				<br>
+				<hr>
+				
+				<div class="pd-20 card-box mb-30">
+					<h2>Список клиентов</h2>
+					<hr>
+					<table class="table table-bordered">
+						<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Имя</th>
+							
+							<th scope="col">Дата Рождения</th>
+							<th scope="col">Купленный парфюм</th>
+							<th scope="col">Подарки</th>
+							<th scope="col">Заплатил</th>
+							<th scope="col">Узнать больше</th>
+							
+						</tr>
+						</thead>
+						<tbody>
+							{% for j in prod_pag_customer %}
+							<tr>
+								
+								<th scope="row">{{ forloop.counter }}</th>
+								<th scope="row">{{j.first_name}} {{j.last_name}}</th>
+							
+								<th scope="row">{{j.birthday|date:'d.m.Y'}}</th>
+								
+	
+								{% if j.purchases.all.count|mod:5 == 0 and j.purchases.all.count > 0  %}
+									<th style='color: red;' scope="row"><a style='color: red;' href={% url "employer_give_gift" j.id %}>{{j.purchases.all.count}}(+1 Подарок)</a></th>
+	
+								{% else %}
+									<th scope="row">{{j.purchases.all.count}}</th>
+								{% endif %}
+								<th scope="row">{{j.gifts.all.count}}</th>
+								<th scope="row">{{j.bought}} TMT</th>
+								<th scope="row"> <a href={% url "employer_customer_detail" j.id %}>...</a></th>
+								
+								
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<div class="btn-toolbar justify-content-center mb-15">
+                        <div class="btn-group">
+                            {% if prod_pag_customer.has_previous %}
+                            <a href="?page={{ prod_pag_customer.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
+                            {% else %}
+                            <a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
+                            {% endif %}
+                            
+                            {% for i in prod_pag_customer.paginator.page_range %}
+
+                                {% if prod_pag_customer.number == i %}
+                                <span class="btn btn-primary current">{{i}}</span>
+                                
+                                {% else %}
+                                <a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
+                                
+                                {% endif %}
+
+                            {% endfor %}
+
+                            {% if prod_pag_customer.has_next %}
+                            <a href="?page={{ prod_pag_customer.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
+                            {% else %}
+                            <a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+				</div>
+
+				<hr>
+							  
+
+
+					
+				<div class="footer-wrap pd-20 mb-20 card-box">
+					Virus Oil Parfume - Employee Panel
+ 
+				</div>
+			</div>
+		</div>
+
+		{% endblock %}
+
+	

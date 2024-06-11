@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>{{title}}</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static "main/landing_page/css/bootstrap.css" %}" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{% static "main/landing_page/css/style.css" %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static "main/landing_page/css/responsive.css" %}" rel="stylesheet" />
+  <link href="{% static "main/landing_page/table.css" %}" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="hero_area ">
+        <header class="header_section">
+          <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+              <a class="navbar-brand" href="{% url "web.home" %}">
+                
+                <span style='color: #7d612c'>
+                  Virus Oil
+                </span>
+        
+              </a>
+              <div class="" id="">
+              
+                <div class="custom_menu-btn">
+                  <button onclick="openNav()">
+                    <span class="s-1">
+    
+                    </span>
+                    <span class="s-2">
+    
+                    </span>
+                    <span class="s-3">
+    
+                    </span>
+                  </button>
+                </div>
+                <div id="myNav" style='background-color: #f0d5a3' class="overlay">
+                  <div class="overlay-content">
+                    <a style='color: f0d5a3;' href="{% url "web.home" %}">Главная страница</a>
+                    <a style='color: f0d5a3;' href="{% url "web.catalog" %}">Каталог</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </header>
+        <section class="contact_section layout_padding">
+          <div class="container ">
+            <h2 style=' color:#7d612c'>
+              Наш каталог
+            </h2>
+          </div>
+            <div class="container">
+                
+                    {% comment %} <main> {% endcomment %}
+                      <table class='blur-background' >
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Бренд</th>
+                            <th>Имя</th>
+                            <th>Т.Вода</th>
+                            <th>Категория</th>
+                            <th>Цена</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for i in parfume_obj %}
+                          <tr style="border: 1px solid black">
+                            <td>{{forloop.counter}}</td>
+                            <td>{{i.brand}}</td>
+                            <td>{{i.name}}</td>
+                            {% if i.toilet_water == 'Нет' %}
+                              <td style = 'color:red;'>{{i.toilet_water}}</td>
+                            {% else %}
+                              <td style = 'color:green;'>{{i.toilet_water}}</td>
+                            {% endif %}
+                            <td>{{i.category}}</td>
+                            <td class="price-column">
+                              <button width='10px' class="show-variations-button" onclick="toggleVariations('variations{{forloop.counter}}')">Смотреть</button>
+                              <div class="price-variations" id="variations{{forloop.counter}}">
+                              {% for j in i.volumes.all %}
+                                <p>{{ j.volum_ml }}Ml - {{j.price}}TMT </p>
+                              {% empty %}
+                                <p>Пока пусто</p>
+                              {% endfor %}
+                              </div>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                      
+                  
+                          <!-- Add more rows as needed -->
+                        </tbody>
+                      </table>                        
+                    {% comment %} </main> {% endcomment %}
+                
+            </div>
+        </div>
+        </section>
+    </div>
+    <script>
+      function toggleVariations(id) {
+        var variationsDiv = document.getElementById(id);
+        if (variationsDiv.style.display === "none") {
+          variationsDiv.style.display = "block";
+        } else {
+          variationsDiv.style.display = "none";
+        }
+      }
+      </script>
+    
+  
+  <!-- info section -->
+
+
+
+  <!-- end info section -->
+
+
+  <!-- footer section -->
+
+  <!-- end  footer section -->
+
+
+  <script type="text/javascript" src="{% static "main/landing_page/js/jquery-3.4.1.min.js" %}"></script>
+  <script type="text/javascript" src="{% static 'main/landing_page/js/bootstrap.js' %}"></script>
+  <script type="text/javascript" src="{% static "main/landing_page/js/custom.js" %}"></script>
+  <script type="text/javascript" src="{% static "main/landing_page/table.js" %}"></script>
+
+
+
+</body>
+
+</html>

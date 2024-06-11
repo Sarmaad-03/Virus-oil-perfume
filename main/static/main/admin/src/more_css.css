@@ -1,0 +1,41 @@
+body {
+    margin-top: 50px;
+  }
+  
+  #expandy-bit {
+    width: 350px;
+    margin: auto;
+    padding: 1rem;
+  }
+  
+  .expandy-control {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+  }
+  
+  .expand-arrow {
+    text-align: right;
+  }
+  
+  .stuff {
+    padding-top: 2rem;
+  }
+  
+  .actions {
+    
+    justify-content: space-around;
+  }
+  
+  #content {
+    height: 0px;
+    overflow: hidden;
+    transition: height 300ms;
+  }
+  
+  .thing {
+    padding: 2rem;
+    border: 1px solid lightgrey;
+    margin-bottom: 1rem;
+  }
+  
