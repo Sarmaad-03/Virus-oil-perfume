@@ -56,7 +56,7 @@ def index(request):
     
     # For Customer
 
-    paginator_c = Paginator(all_customers, 6)
+    paginator_c = Paginator(all_customers, 5)
     page_number_c = request.GET.get('page')
 
     try:
