@@ -32,7 +32,7 @@
 							<p class="mb-30">Заполните все бланки</p>
 						</div>
 					</div>
-					<form method='POST' action={% url "admin_add_parfume" %}>{% csrf_token %}
+					<form method='POST' action={% url "admin_add_parfume" %} enctype="multipart/form-data">{% csrf_token %}
 						<div>
 							{% for i in form.errors %}
 								{{i}}
@@ -61,6 +61,12 @@
 							<label class="col-sm-12 col-md-2 col-form-label">Категория</label>
 							<div class="col-sm-12 col-md-10">
 								{{form.category}}
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-12 col-md-2 col-form-label">Фото</label>
+							<div class="col-sm-12 col-md-10">
+								{{form.img}}
 							</div>
 						</div>
 						

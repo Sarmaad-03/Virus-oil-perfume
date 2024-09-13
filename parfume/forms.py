@@ -13,7 +13,7 @@ cat_selection =  (
     ('Женский','Женский'),
     ('Унисекс','Унисекс'),
 )
-
+ 
 
 class ParfumeForm(forms.ModelForm):
 
@@ -21,12 +21,12 @@ class ParfumeForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'text', 'placeholder':"наименование"}))
     toilet_water = forms.CharField(widget=forms.Select(choices=selection, attrs={'class': 'form-control'}))
     category = forms.CharField(widget=forms.Select(choices=cat_selection, attrs={'class': 'form-control'}))
-    
+    img = forms.ImageField( widget=forms.FileInput())    
 
     class Meta:
         model = Parfume
         fields = ('brand',  
-                  'toilet_water', 'name', 'category')
+                  'toilet_water', 'name', 'category', 'img')
         
 
 

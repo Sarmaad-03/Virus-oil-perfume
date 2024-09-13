@@ -963,7 +963,7 @@ a:focus {
 }
 
 .contact_section button {
-  width: 180px;
+  width: 100%;
   padding: 10px 35px;
   background-color: #7d612c;
   color: #ffffff;

@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 
@@ -79,6 +80,7 @@
                         <thead>
                           <tr>
                             <th>#</th>
+                            <th>Фото</th>
                             <th>Бренд</th>
                             <th>Имя</th>
                             <th>Т.Вода</th>
@@ -89,7 +91,10 @@
                         <tbody>
                           {% for i in parfume_obj %}
                           <tr style="border: 1px solid black">
-                            <td>{{forloop.counter}}</td>
+                            
+                            
+                            <td style = 'background-color: #7d612c;color:white'>{{ forloop.counter}}</td>
+                            <td><img src = {{i.img.url}} style = 'width:70%; height:70%'></td>
                             <td>{{i.brand}}</td>
                             <td>{{i.name}}</td>
                             {% if i.toilet_water == 'Нет' %}
@@ -99,7 +104,7 @@
                             {% endif %}
                             <td>{{i.category}}</td>
                             <td class="price-column">
-                              <button width='10px' class="show-variations-button" onclick="toggleVariations('variations{{forloop.counter}}')">Смотреть</button>
+                              <button  class="show-variations-button" onclick="toggleVariations('variations{{forloop.counter}}')">Смотреть</button>
                               <div class="price-variations" id="variations{{forloop.counter}}">
                               {% for j in i.volumes.all %}
                                 <p>{{ j.volum_ml }}Ml - {{j.price}}TMT </p>
@@ -116,7 +121,36 @@
                         </tbody>
                       </table>                        
                     {% comment %} </main> {% endcomment %}
-                
+
+                    
+                    <div class="paginator">
+
+
+                      {% if parfume_obj.has_previous %}
+                        <a class='paginator' href="?page=1">Начало</a>
+                        <a class='paginator' href="?page={{parfume_obj.previous_page_number}}">‹‹‹</a>          
+                      {% endif %}
+
+
+                      {% for i in parfume_obj.paginator.page_range %}
+                        
+                        {% if parfume_obj.number == i %}
+                            <a class='paginator' class="active" >{{i}}</a>
+                        {% else %}
+                            <a class='paginator' href="?page={{ i}}">{{i}}</a>
+                        {% endif %}
+
+                      {% endfor %}
+                      
+                      {% if parfume_obj.has_next %}
+                        <a class='paginator' href="?page={{parfume_obj.next_page_number}}"> ›››</a>
+                      {% endif %}
+
+                      {% if parfume_obj.has_next %}
+                        <a class='paginator' href="?page={{pag.num_pages}}">Конец</a>
+                      {% endif %}
+
+                    </div>
             </div>
         </div>
         </section>

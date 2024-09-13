@@ -3,8 +3,13 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
-
 from parfume.models import Parfume
+from django.core.paginator import (
+                                   Paginator, 
+                                   EmptyPage, 
+                                   PageNotAnInteger
+                                   )
+
 
 from .models import (
     Bottles,
@@ -78,12 +83,23 @@ def login_employer(request):
 
 def catalog(request):
     parfume_obj = Parfume.objects.all()
-    # parfume = sorted(set(Parfume.objects.filter( amount__gt = 0 ).values_list('brand', flat=True)))
+    
+    paginator_perfume = Paginator(parfume_obj, 10)
+    page_number_perfume = request.GET.get('page')
+    
 
-    # print(parfume)
+    try:
+        prod_pag_perfume = paginator_perfume.page(page_number_perfume)
+    except PageNotAnInteger:
+        prod_pag_perfume = paginator_perfume.page(1)
+    except EmptyPage:
+        prod_pag_perfume =paginator_perfume.page(paginator_perfume.num_pages)
+    
+
+    
     context = {
-        # 'parfume': parfume,
-        'parfume_obj': parfume_obj,
+        'parfume_obj': prod_pag_perfume,
+        'pag': paginator_perfume,
         'title': 'Perfume Catalog'
     }
     return render(request, 'main/landing_page/catalog.html', context)

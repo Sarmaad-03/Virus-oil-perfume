@@ -1,4 +1,5 @@
 # Basic
+import os
 from django.contrib.auth.models import User
 from django.contrib.auth import  logout
 from django.shortcuts import get_object_or_404, render, redirect
@@ -40,6 +41,14 @@ from customer.forms import (
 
 from landing_page.forms import M_CarouselForm, BottlesForm, WorkersForm, WorkPlaceForm
 from django.views.decorators.http import require_GET
+
+
+
+def deleting_photos(name):
+    my_path = os.getcwd()
+    os.remove(f'{my_path}//media//{name}')
+    
+    
 
 
 # Main admin interface
@@ -142,9 +151,10 @@ def add_customer(request):
     # Adding to DataBase
     if request.method == 'POST':
         if form.is_valid():
+            fullname = form.cleaned_data['first_name'] + ' ' + form.cleaned_data['last_name']
             form.save()
             messages.success(
-                request, 'Клиент успешно добавлен.'
+                request, f'Клиент {fullname} успешно добавлен.'
                 )
             return redirect('admin_customer_list')
         
@@ -163,15 +173,16 @@ def add_customer(request):
 # Actions with Parfume
 
 def add_parfume(request):
-    form = ParfumeForm(request.POST or None)
-    
+    form = ParfumeForm(request.POST or None, request.FILES or None)
 
     # Adding to DataBase
     if request.method == 'POST':
         if form.is_valid():
+            perfume_info = form.cleaned_data['name'] + ' от ' + form.cleaned_data['brand']
+            print(perfume_info)
             form.save()
             messages.success(
-                request, 'Парфюм успешно добавлен.'
+                request, f'Парфюм {perfume_info} успешно добавлен.'
                 )
             return redirect('admin_parfume_list')
         
@@ -192,9 +203,11 @@ def add_parfume(request):
 def delete_parfume(request, id):
     try:
         obj = Parfume.objects.get(id=id)
+        img_copy = obj
         obj.delete()
+        deleting_photos(img_copy.img)
         messages.success(
-                    request, 'Парфюм успешно удален.'
+                    request, f'Парфюм {img_copy.name} от {img_copy.brand} успешно удален.'
                     )
     except:
         
@@ -221,7 +234,7 @@ def edit_parfume(request, id):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Парфюм успешно изменен.'
+                request, f'Парфюм {obj.name} от {obj.brand} успешно изменен.'
                 )
             return redirect('admin_parfume_list')
         else:
@@ -268,9 +281,10 @@ def customer_detail(request, id):
 def customer_delete(request, id):
     try:
         obj = UserAccount.objects.get(id=id)
+        client_copy = obj
         obj.delete()
         messages.success(
-                    request, 'Клиент успешно удален.'
+                    request, f'Клиент {client_copy.first_name} {client_copy.last_name} успешно удален.'
                     )
     except:
         
@@ -313,16 +327,11 @@ def make_purchase(request):
 
     # adding to db
     if request.method == 'POST':
-        # if form.is_valid():
-            # form.save()
-        
+
+
         c = request.POST.get('customer')
         print(c)
-        # p = request.POST.get('parfume')
-        # Purchase.objects.create(
-        #     user = c,
-        #     parfume = p
-        # )
+
         messages.success(
             request, 'Сделка успешно добавлена.'
             )
@@ -368,9 +377,10 @@ def add_employee(request):
             emp.user = user
             emp.save()
             
+            fullname = form_2.cleaned_data['first_name'] + ' ' + form_2.cleaned_data['last_name']
         
             messages.success(
-                request, 'Работник успешно добавлен.'
+                request, f'Работник {fullname} успешно добавлен.'
             )
             return redirect('admin_home')
         
@@ -437,10 +447,11 @@ def employer_delete(request, id):
     try:
         obj = Employee.objects.get(id=id)
         user = User.objects.get(id = obj.user.id)
+        user_info = user
         user.delete()
         obj.delete()
         messages.success(
-                    request, 'Работник успешно удален.'
+                    request, f'Работник {user_info.first_name} {user_info.last_name} успешно удален.'
                     )
     except:
         
@@ -515,9 +526,10 @@ def add_volume(request, id):
         
             
         messages.success(
-            request, 'Вариация успешно добавлена.'
+            request, f'Вариация для {p.name} - ({vol} ml - {price} TMT) успешно добавлена.'
             )
-        return redirect('admin_parfume_list')
+    
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         
     
     context = {
@@ -546,10 +558,13 @@ def landing_page(request):
 def delete_m_carousel(request, id):
     try:
         obj = MainCarousel.objects.get(id=id)
+        del_img = obj.img
         obj.delete()
+        deleting_photos(del_img)
         messages.success(
                     request, 'Успешно удалено.'
                     )
+        
     except:
         
         messages.warning(
@@ -592,7 +607,6 @@ def add_bottles(request):
         'title': 'Adding Bottle',
         'form': form,
         }
-    
     return render(request, 'main/admin/add_bottle.html', context)
 
 def add_work_pht(request):
@@ -636,9 +650,12 @@ def delete_bottles(request, id):
     try:
         obj = Bottles.objects.get(id=id)
         obj.delete()
+        img_del = obj.img
         messages.success(
                     request, 'Успешно удалено.'
                     )
+        deleting_photos(img_del)
+
     except:
         
         messages.warning(
@@ -652,9 +669,12 @@ def delete_work_pht(request, id):
     try:
         obj = WorkerDesc.objects.get(id=id)
         obj.delete()
+        del_img = obj.img
         messages.success(
                     request, 'Успешно удалено.'
                     )
+        deleting_photos(del_img)
+
     except:
         
         messages.warning(
@@ -667,9 +687,12 @@ def delete_work_place(request, id):
     try:
         obj = WorkPlace.objects.get(id=id)
         obj.delete()
+        del_img = obj.img
         messages.success(
                     request, 'Успешно удалено.'
                     )
+        deleting_photos(del_img)
+
     except:
         
         messages.warning(
