@@ -35,34 +35,34 @@
 					<table class="table table-bordered">
 						<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Имя</th>
-							<th scope="col">Фамилия</th>
-							<th scope="col">Дата Рождения</th>
-							<th scope="col">Купленный парфюм</th>
-							<th scope="col">Заплатил</th>
-							<th scope="col">Больше</th>
+							<th style='font-size: 13px' scope="col">#</th>
+							<th style='font-size: 13px' scope="col">Имя</th>
+							<th style='font-size: 13px' scope="col">Фамилия</th>
+							<th style='font-size: 13px' scope="col">Дата Рождения</th>
+							<th style='font-size: 13px' scope="col">Купленный парфюм</th>
+							<th style='font-size: 13px' scope="col">Заплатил</th>
+							<th style='font-size: 13px' scope="col">Больше</th>
 						</tr>
 						</thead>
 						<tbody>
 						{% for j in prod_pag %}
 						<tr>
 							
-							<th scope="row">{{ forloop.counter }}</th>
-							<th scope="row">{{j.first_name}}</th>
-							<th scope="row">{{j.last_name}}</th>
-							<th scope="row">{{j.birthday|date:'d.m.Y'}}</th>
+							<th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+							<th style='font-size: 13px' scope="row">{{j.first_name}}</th>
+							<th style='font-size: 13px' scope="row">{{j.last_name}}</th>
+							<th style='font-size: 13px' scope="row">{{j.birthday|date:'d.m.Y'}}</th>
 							{% if j.purchases.all.count|mod:5 == 0 and j.purchases.all.count > 5 %} 
-								<th style='color: red;' scope="row">{{j.purchases.all.count}} (Сделать скидку)</th>
+								<th style='font-size: 13px' style='color: red;' scope="row">{{j.purchases.all.count}} (Сделать скидку)</th>
 
 							{% elif j.purchases.all.count|mod:5 == 0 and j.purchases.all.count != 0  and j.purchases.all.count <= 5%}
-								<th style='color: red;' scope="row">{{j.purchases.all.count}}(+1 Подарок)</th>
+								<th style='font-size: 13px' style='color: red;' scope="row">{{j.purchases.all.count}}(+1 Подарок)</th>
 
 							{% else %}
-								<th scope="row">{{j.purchases.all.count}}</th>
+								<th style='font-size: 13px' scope="row">{{j.purchases.all.count}}</th>
 							{% endif %}
-							<th scope="row">{{j.bought}} TMT</th>
-							<th scope="row"> <a href={% url "admin_customer_detail" j.id %}>...</a></th>
+							<th style='font-size: 13px' scope="row">{{j.bought}} TMT</th>
+							<th style='font-size: 13px' scope="row"> <a class='btn btn-success' href={% url "admin_customer_detail" j.id %}>Смотреть</a></th>
 							
 						</tr>
 						{% endfor %}

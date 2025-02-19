@@ -1,0 +1,39 @@
+        
+<br>        
+<hr>
+
+<div class="search-container" id="search">
+    <form id="custom-search-form" action="" method="GET">
+        <div class="custom-form-row">
+            <div class="custom-form-group search-box">
+                <input 
+                    class="custom-form-control" 
+                    style='background-color: #7d612c; 
+                            color: white; 
+                            placeholder-color: white;'
+                    type="text" 
+                    name="search"  
+                    placeholder="Бренд/Название" 
+                    value="{{ search_query }}" 
+                >
+            </div>
+            <div class="custom-form-group filter-box">
+                <select 
+                    name="category"  
+                    class="custom-filter-make custom-filter custom-form-control"
+                    style='height: 50px'
+                >
+                    <option value="all" {% if filter_category == 'all' %}selected{% endif %}>Все</option>
+                    <option value="Мужской" {% if filter_category == 'Мужской' %}selected{% endif %}>Мужской</option>
+                    <option value="Женский" {% if filter_category == 'Женский' %}selected{% endif %}>Женский</option>
+                    <option value="Унисекс" {% if filter_category == 'Унисекс' %}selected{% endif %}>Унисекс</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="custom-btn btn-primary">Поиск</button>
+    </form>
+</div>
+
+<hr>
+<br>
+<br>

@@ -14,6 +14,25 @@ class UserAccount(models.Model):
     def __str__(self): 
         return f'{self.first_name} {self.last_name} | {self.birthday} |'
     
+    
+    def gifts_num(self):
+        total = 0
+        for i in self.gifts.all():
+            total += 1
+        return total
+    
+    # Checking must give gift or not
+    def give_gift(self):
+        all_bought = self.purchases.all().count()
+        gifts = self.gifts.all().count()
+        must_be = all_bought // 5
+        # if (gifts < must_be) and (all_bought % 5 == 0) and (all_bought != 0):
+        if (gifts < must_be) and (all_bought != 0):
+            return True
+        
+        else:
+            return False 
+    
 
     def bought(self):
         total = 0

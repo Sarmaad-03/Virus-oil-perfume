@@ -5,13 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const alert = document.getElementById("js_mes");
-    const userSearchInput = document.querySelector('#user-search-input-mu');
     const perfumeSearchInput = document.querySelector('#perfume-search-input-mu');
-    const userSuggestions = document.querySelector('#user-suggestions-mu');
     const perfumeSuggestions = document.querySelector('#perfume-suggestions-mu');
     const searchForm = document.querySelector('#search-form-mu');
-
     const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    const clientId = document.getElementById("hidden-id").value;
+
 
     const handleAlerts = (type, mes) => {
         alert.innerHTML = `<div class="alert alert-${type}" role="alert">
@@ -21,49 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    userSearchInput.addEventListener('input', function (e) {
-        const query = e.target.value.trim();
-        if (query !== '') {
-            $.ajax({
-                url: '/get_items_user/',
-                data: { 'query': query },
-                dataType: 'json',
-                success: function (data) {
-                    
-                    userSuggestions.innerHTML = '';
-                    data.forEach(user => {
-                        const suggestion = document.createElement('div');
-                        suggestion.textContent = user.username;
-                        suggestion.textContent = user.surname;
-                        suggestion.textContent = user.dob;
-                        suggestion.textContent = user.purchases;
-
-                        suggestion.style.border = '1px solid #1b00ff'; // Light grey border
-                        suggestion.style.padding = '5px'; // Adding some padding for better appearance
-                        suggestion.style.margin = '3px 0'; // Adding some margin between suggestions
-                        suggestion.style.color = 'white'; // Adding some margin between suggestions
-                        suggestion.style.backgroundColor = '#1b00ff'; // Adding some margin between suggestions
-                        suggestion.style.borderRadius = '5px'; // Adding some border radius
-
-                        const s_val = user.username + ' ' + user.surname + ' | ' + user.dob + ' | ' + ' | покупки: ' + user.purchases
-
-                        suggestion.textContent = s_val;
-
-                        suggestion.dataset.userId = user.id; // Storing user ID as data attribute
-                        suggestion.addEventListener('click', function () {
-                            
-                            userSearchInput.value = user.username + ' ' + user.surname + ' |год рождения: ' + user.dob;
-                            userSearchInput.dataset.userId = user.id; // Storing user ID in input dataset
-                            userSuggestions.innerHTML = '';
-                        });
-                        userSuggestions.appendChild(suggestion);
-                    });
-                }
-            });
-        } else {
-            userSuggestions.innerHTML = '';
-        }
-    });
 
     perfumeSearchInput.addEventListener('input', function (e) {
         const query = e.target.value.trim();
@@ -108,20 +64,19 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
 
         const fd = new FormData()
-        const userId = userSearchInput.dataset.userId;
-        const perfumeId = perfumeSearchInput.dataset.perfumeId;
+        perfumeId = perfumeSearchInput.dataset.perfumeId;
 
         fd.append('csrfmiddlewaretoken', csrf[0].value)
-        fd.append('user', userId)
         fd.append('parfume', perfumeId)
+        fd.append('client', clientId)
 
 
 
         // const userId = userSearchInput.dataset.userId;
         // const perfumeId = perfumeSearchInput.dataset.perfumeId;
-        if (userId && perfumeId) {
+        if (perfumeId) {
             $.ajax({
-                url: '/add_purchase/',
+                url: '/add_purchase_details/',
                 type: 'POST',
                 headers: {
                     'X-CSRFToken': csrf
@@ -134,11 +89,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     handleAlerts('success', 'Успешно добавлено.')
                     setTimeout(()=>{
                         alert.innerHTML = ""
-                       
-                        userSearchInput.value = ""
+                        perfumeId = ''
                         perfumeSearchInput.value = ""
-                        
-                    }, 2000)
+                        location.reload();
+                    }, 1)
+
                 },
                 error: function (xhr, status, error) {
                     console.error('Error adding purchase:', error);

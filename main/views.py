@@ -44,45 +44,66 @@ from django.views.decorators.http import require_GET
 
 
 
+
+
+
+def customer_search(request, category):
+    first_name = request.GET.get('first_name', '').strip()
+    last_name = request.GET.get('last_name', '').strip()
+
+    # Build the query based on available input fields
+    search_query = {}
+    if first_name:
+        search_query['first_name__icontains'] = first_name
+    if last_name:
+        search_query['last_name__icontains'] = last_name
+
+    # Perform the search only if there's any criteria
+    results = UserAccount.objects.filter(**search_query) if search_query else []
+
+    if category == 'admin':
+        return render(request, 'main/admin/searcher.html', {'results': results})
+    else:
+        return render(request, 'main/employer/searcher.html', {'results': results})
+
+
 def deleting_photos(name):
     my_path = os.getcwd()
     os.remove(f'{my_path}//media//{name}')
     
+
+def get_page_range(page_obj, max_pages=5):
+    """
+    Returns a range of page numbers to display, centered around the current page.
+    max_pages determines how many page numbers to show at a time.
+    """
+    start_index = max(page_obj.number - max_pages // 2, 1)
+    end_index = min(start_index + max_pages - 1, page_obj.paginator.num_pages)
     
+    # Adjust start index if we're at the end of the page list
+    if end_index - start_index < max_pages - 1:
+        start_index = max(end_index - max_pages + 1, 1)
+
+    return range(start_index, end_index + 1)
 
 
 # Main admin interface
 
 def index(request):
     today = str(datetime.datetime.today()).split(' ')[0].split('-')
-
-    customers_dob = UserAccount.objects.filter(birthday__month=today[1], birthday__day = today[2])
+    customers_dob = UserAccount.objects.filter(birthday__month=today[1], birthday__day=today[2])
     
     all_purchases = Purchase.objects.all().count()
-    all_customers = UserAccount.objects.all()
-    all_parfume = Parfume.objects.all()
+    all_customers = UserAccount.objects.all().count()
+    all_parfume = Parfume.objects.all().count()
 
-    
-    # For Customer
-
-    paginator_c = Paginator(all_customers, 5)
-    page_number_c = request.GET.get('page')
-
-    try:
-        prod_pag_customer = paginator_c.page(page_number_c)
-    except PageNotAnInteger:
-        prod_pag_customer = paginator_c.page(1)
-    except EmptyPage:
-        prod_pag_customer =paginator_c.page(paginator_c.num_pages)
-
-    
+  
 
     context = {
         'title': 'HomePage',
-        'all_parfume': all_parfume,
-        'all_customers': all_customers,
-        'prod_pag_customer': prod_pag_customer,
         'customers_dob': customers_dob,
+        'clients': all_customers,
+        'perfumes': all_parfume,
         'purchases': all_purchases,
     }
     
@@ -92,7 +113,7 @@ def index(request):
 def parfume_list(request):
     all_parfume = Parfume.objects.all()
 
-    paginator = Paginator(all_parfume, 10)
+    paginator = Paginator(all_parfume, 10)  # Show 1 perfume per page
     page_number = request.GET.get('page')
 
     try:
@@ -100,24 +121,27 @@ def parfume_list(request):
     except PageNotAnInteger:
         prod_pag = paginator.page(1)
     except EmptyPage:
-        prod_pag =paginator.page(paginator.num_pages)
+        prod_pag = paginator.page(paginator.num_pages)
 
+    # Generate the page range using the helper function
+    page_range = get_page_range(prod_pag, max_pages=5)
 
     context = {
         'title': 'Parfumes List',
         'menu': 'admin_parfume_list',
         'prod_pag': prod_pag,
+        'page_range': page_range,  # Include the page range in the context
         'all_parfume': all_parfume,
-    } 
+    }
 
     return render(request, 'main/admin/parfume_list.html', context)
+
 
 
 
 def parfume_volume_list(request,pk):
     parfume = Parfume.objects.get(id=pk)
     context = {
-        # 'parfume': parfume,
         'parfume': parfume
     }
     return render(request, 'main/admin/parfume_volume_list.html', context)
@@ -126,7 +150,7 @@ def parfume_volume_list(request,pk):
 def customer_list(request):
     all_customers = UserAccount.objects.all()
 
-    paginator = Paginator(all_customers, 10)
+    paginator = Paginator(all_customers, 10)  # Show 1 customer per page for demonstration
     page_number = request.GET.get('page')
 
     try:
@@ -134,16 +158,21 @@ def customer_list(request):
     except PageNotAnInteger:
         prod_pag = paginator.page(1)
     except EmptyPage:
-        prod_pag =paginator.page(paginator.num_pages)
+        prod_pag = paginator.page(paginator.num_pages)
+
+    # Generate the limited page range using get_page_range
+    page_range = get_page_range(prod_pag, max_pages=5)
 
     context = {
         'title': 'Customers List',
         'menu': 'admin_customer_list',
-        'prod_pag':prod_pag,
+        'prod_pag': prod_pag,
         'all_customers': all_customers,
+        'page_range': page_range,  # Include the page range in the context
     } 
 
     return render(request, 'main/admin/customer_list.html', context)
+
 
 def add_customer(request):
     form = CustomerCreationForm(request.POST or None)
@@ -156,7 +185,8 @@ def add_customer(request):
             messages.success(
                 request, f'Клиент {fullname} успешно добавлен.'
                 )
-            return redirect('admin_customer_list')
+            # return redirect('admin_customer_list')
+            return redirect('admin_make_purchase')
         
         else:
             messages.warning(
@@ -179,12 +209,13 @@ def add_parfume(request):
     if request.method == 'POST':
         if form.is_valid():
             perfume_info = form.cleaned_data['name'] + ' от ' + form.cleaned_data['brand']
-            print(perfume_info)
-            form.save()
+            # print(perfume_info)
+            perfume = form.save()
             messages.success(
                 request, f'Парфюм {perfume_info} успешно добавлен.'
                 )
-            return redirect('admin_parfume_list')
+            
+            return redirect('admin_add_volume', perfume.id)
         
         else:
             messages.warning(
@@ -215,7 +246,7 @@ def delete_parfume(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_parfume_list')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def edit_parfume(request, id):
@@ -271,9 +302,13 @@ def dob_filter(request):
 
 def customer_detail(request, id):
     customer = UserAccount.objects.get(id = id)
+    purchases = Purchase.objects.filter(user=customer)
+    gifts = Gift.objects.filter(user = customer)
     context = {
         'title': 'Customers Detail',
-        'customer': customer
+        'customer': customer,
+        'purchases': purchases,
+        'gifts': gifts
     }
     return render(request, 'main/admin/customer_detail.html', context)
 
@@ -292,7 +327,7 @@ def customer_delete(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_customer_list')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 
@@ -309,12 +344,13 @@ def purchases_list(request):
     except EmptyPage:
         prod_pag =paginator.page(paginator.num_pages)
 
-
+    page_range = get_page_range(prod_pag, max_pages=5)
 
     context = {
         'title': 'Purchase List', 
         'all_purchases': all_purchases,
-        'prod_pag':prod_pag
+        'prod_pag':prod_pag,
+        'page_range':page_range,
     }
     return render(request, 'main/admin/purchase_list.html', context)
 
@@ -358,7 +394,7 @@ def delete_purchase(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_purchasaes')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
 # Employers
 
@@ -373,6 +409,7 @@ def add_employee(request):
 
         if form.is_valid() and form_2.is_valid():
             user = form.save()
+            
             emp = form_2.save(commit=False)
             emp.user = user
             emp.save()
@@ -396,10 +433,9 @@ def add_employee(request):
     return render(request, 'main/admin/add_employee.html', context)
 
 def empployers_list(request):
-
     all_employers = Employee.objects.all()
 
-    paginator = Paginator(all_employers, 10)
+    paginator = Paginator(all_employers, 10)  # Display 10 employers per page
     page_number = request.GET.get('page')
 
     try:
@@ -407,14 +443,19 @@ def empployers_list(request):
     except PageNotAnInteger:
         prod_pag = paginator.page(1)
     except EmptyPage:
-        prod_pag =paginator.page(paginator.num_pages)
+        prod_pag = paginator.page(paginator.num_pages)
+
+    # Generate the limited page range using get_page_range
+    page_range = get_page_range(prod_pag, max_pages=5)
 
     context = {
-        'title': 'Employers List', 
+        'title': 'Employers List',
         'all_employers': all_employers,
-        'prod_pag':prod_pag
+        'prod_pag': prod_pag,
+        'page_range': page_range,  # Include the limited page range in the context
     }
     return render(request, 'main/admin/employers_list.html', context)
+
 
 
 def employers_dob(request):
@@ -459,7 +500,7 @@ def employer_delete(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_employers_list')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def edit_volume(request, id):
 
@@ -506,7 +547,7 @@ def delete_volume(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_parfume_list')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def add_volume(request, id):
@@ -571,7 +612,7 @@ def delete_m_carousel(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_edit_page')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def add_m_carousel(request):
     form = M_CarouselForm(request.POST or None)
@@ -662,7 +703,7 @@ def delete_bottles(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_edit_page')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def delete_work_pht(request, id):
@@ -681,7 +722,7 @@ def delete_work_pht(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_edit_page')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def delete_work_place(request, id):
     try:
@@ -716,6 +757,7 @@ def give_gift(request, id):
     form = GiftForm(request.POST or None)
     context = {
         'title':'Adding Gift',
+        'client':client,
         'form': form,
         'id': id
     }
@@ -736,12 +778,13 @@ def gift_list(request):
     except EmptyPage:
         prod_pag =paginator.page(paginator.num_pages)
 
-
+    page_range = get_page_range(prod_pag, max_pages=5)
 
     context = {
         'title': 'Gift List',
         'prod_pag': prod_pag,
-        'num': num
+        'num': num,
+        'page_range': page_range,
     }
     return render(request, 'main/admin/gift_list.html', context)
 
@@ -759,7 +802,7 @@ def gift_delete(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('admin_gift_list')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 
@@ -808,7 +851,7 @@ def add_purchase(request):
             perfume = Parfume_volume.objects.get(id=perfume_id)
         except:
             print('user not found')
-        
+         
         
         purchase = Purchase(user=user, parfume=perfume).save()
         data['status'] = 'ok'
@@ -816,6 +859,42 @@ def add_purchase(request):
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
+def add_gift(request):
+    data = {}
+    if is_ajax(request=request):
+        perfume_id = request.POST.get('parfume')
+        client_id = request.POST.get('client')
+        
+        print(perfume_id)
+        
+        try:
+            perfume = Parfume_volume.objects.get(id = perfume_id)
+            client = UserAccount.objects.get(id=client_id) 
+        except:
+            print('not found')
+
+    Gift(user = client, parfume=perfume).save()
+    data['status'] = 'ok'
+    return JsonResponse(data)
+
+
+def add_purchase_details(request):
+    data = {}
+    if is_ajax(request=request):
+        perfume_id = request.POST.get('parfume')
+        client_id = request.POST.get('client')
+        
+        try:
+            perfume = Parfume_volume.objects.get(id = perfume_id)
+            client = UserAccount.objects.get(id=client_id) 
+        except:
+            print('not found')
+            
+    Purchase(user = client, parfume = perfume).save()
+    data['status'] = 'ok'
+    return JsonResponse(data)
+            
 
 
 def UserLogout(request):

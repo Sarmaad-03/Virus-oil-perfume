@@ -64,6 +64,11 @@ urlpatterns = [
     path('add_purchase/', add_purchase, name='add_purchase'),
     path('get_items_user/', get_items_user, name='get_items_user'),
     path('get_items_parfume/', get_items_parfume, name='get_items_parfume'),
+    path('add_gift/', add_gift, name='add_gift'),
+    path('add_purchase_details/', add_purchase_details, name='add_purchase_details'),
+    
+    # searchers
+    path('searcher/<str:category>/', customer_search, name='customer_searcher'),
     
 
 ]

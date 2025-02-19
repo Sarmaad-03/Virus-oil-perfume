@@ -35,11 +35,11 @@
 					<table class="table table-bordered">
 						<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Имя</th>
-							<th scope="col">Фамилия</th>
-							<th scope="col">Дата Рождения</th>
-							<th scope="col">Номер</th>
+							<th style='font-size: 13px' scope="col">#</th>
+							<th style='font-size: 13px' scope="col">Имя</th>
+							<th style='font-size: 13px' scope="col">Фамилия</th>
+							<th style='font-size: 13px' scope="col">Дата Рождения</th>
+							<th style='font-size: 13px' scope="col">Номер</th>
 							
 							<th scope="col">Удалить</th>
 						</tr>
@@ -48,11 +48,11 @@
 						{% for j in prod_pag %}
 						<tr>
 							
-							<th scope="row">{{ forloop.counter }}</th>
-							<th scope="row">{{j.first_name}}</th>
-							<th scope="row">{{j.last_name}}</th>
-							<th scope="row">{{j.bithday|date:'d.m.Y'}}</th>
-							<th scope="row">{{j.number}}</th>
+							<th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+							<th style='font-size: 13px' scope="row">{{j.first_name}}</th>
+							<th style='font-size: 13px' scope="row">{{j.last_name}}</th>
+							<th style='font-size: 13px' scope="row">{{j.bithday|date:'d.m.Y'}}</th>
+							<th style='font-size: 13px' scope="row">{{j.number}}</th>
 							
 							<th scope="row"> <a class='btn btn-danger' style='color: white;' href="#">Удалить</a></th>
 							

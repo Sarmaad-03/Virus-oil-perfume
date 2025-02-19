@@ -51,28 +51,28 @@
 					<table class="table table-bordered">
 						<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Бренд</th>
-							<th scope="col">Имя</th>
-							<th scope="col">Туалетная Вода</th>
-							<th scope="col">Категория</th>
-							<th scope="col">Вариации</th>
-							<th scope="col">Изменить</th>
-							<th scope="col">Удалить</th>
+							<th style='font-size: 13px' scope="col">#</th>
+							<th style='font-size: 13px' scope="col">Бренд</th>
+							<th style='font-size: 13px' scope="col">Имя</th>
+							<th style='font-size: 13px' scope="col">Туалетная Вода</th>
+							<th style='font-size: 13px' scope="col">Категория</th>
+							<th style='font-size: 13px' scope="col">Вариации</th>
+							<th style='font-size: 13px' scope="col">Изменить</th>
+							<th style='font-size: 13px' scope="col">Удалить</th>
 						</tr>
 						</thead>
 						<tbody>
 						{% for i in prod_pag %}
 						<tr>
 							
-							<th scope="row">{{ forloop.counter }}</th>
-							<th scope="row">{{i.brand}}</th>
-							<th scope="row">{{i.name}}</th>
-							<th scope="row"{% if i.toilet_water == 'Нет' %} style='color: red;'>{{i.toilet_water}} {% else %}style='color: green;'> {{i.toilet_water}} {% endif %}</th>
-							<th scope="row">{{i.category}}</th>
-							<th scope="row"><a class='btn btn-success' style='color: white;' href={% url "admin_parfume_volume_list" i.id %}>Смотреть</a></th>
-							<th scope="row"><a class='btn btn-info' style='color: white;' href={% url "admin_edit_parfume" i.id %}>Изменить</a></th>
-							<th scope="row"><a class='btn btn-danger' style='color: white;' href={% url "admin_delete_parfume" i.id %}>Удалить</a></th>
+							<th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+							<th style='font-size: 13px' scope="row">{{i.brand}}</th>
+							<th style='font-size: 13px' scope="row">{{i.name}}</th>
+							<th style='font-size: 13px' scope="row"{% if i.toilet_water == 'Нет' %} style='color: red;'>{{i.toilet_water}} {% else %}style='color: green;'> {{i.toilet_water}} {% endif %}</th>
+							<th style='font-size: 13px' scope="row">{{i.category}}</th>
+							<th style='font-size: 13px' scope="row"><a class='btn btn-success' style='color: white;' href={% url "admin_parfume_volume_list" i.id %}>Смотреть</a></th>
+							<th style='font-size: 13px' scope="row"><a class='btn btn-info' style='color: white;' href={% url "admin_edit_parfume" i.id %}>Изменить</a></th>
+							<th style='font-size: 13px' scope="row"><a class='btn btn-danger' style='color: white;' href={% url "admin_delete_parfume" i.id %}>Удалить</a></th>
 							
 						</tr>
 						{% endfor %}
@@ -80,32 +80,37 @@
 					</table>
 					<hr>
 					<div class="btn-toolbar justify-content-center mb-15">
-                        <div class="btn-group">
-                            {% if prod_pag.has_previous %}
-                            <a href="?page={{ prod_pag.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
-                            {% endif %}
-                            
-                            {% for i in prod_pag.paginator.page_range %}
-
-                                {% if prod_pag.number == i %}
-                                <span class="btn btn-primary current">{{i}}</span>
-                                
-                                {% else %}
-                                <a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
-                                
-                                {% endif %}
-
-                            {% endfor %}
-
-                            {% if prod_pag.has_next %}
-                            <a href="?page={{ prod_pag.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
-                            {% endif %}
-                        </div>
-                    </div>
+						<div class="btn-group">
+							{% if prod_pag.has_previous %}
+								<a href="?page={{ prod_pag.previous_page_number }}" class="btn btn-outline-primary prev">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-danger prev disabled">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% endif %}
+					
+							{% for i in page_range %}
+								{% if prod_pag.number == i %}
+									<span class="btn btn-primary current">{{ i }}</span>
+								{% else %}
+									<a href="?page={{ i }}" class="btn btn-outline-primary">{{ i }}</a>
+								{% endif %}
+							{% endfor %}
+					
+							{% if prod_pag.has_next %}
+								<a href="?page={{ prod_pag.next_page_number }}" class="btn btn-outline-primary next">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-danger next disabled">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% endif %}
+						</div>
+					</div>
+					
 				</div>
 
 					

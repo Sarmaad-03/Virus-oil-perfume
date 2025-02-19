@@ -30,161 +30,141 @@
 </head>
 
 <body>
-    <div class="hero_area ">
-        <header class="header_section">
-          <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg custom_nav-container">
-              <a class="navbar-brand" href="{% url "web.home" %}">
-                
-                <span style='color: #7d612c'>
-                  Virus Oil
-                </span>
-        
-              </a>
-              <div class="" id="">
-              
-                <div class="custom_menu-btn">
-                  <button onclick="openNav()">
-                    <span class="s-1">
-    
-                    </span>
-                    <span class="s-2">
-    
-                    </span>
-                    <span class="s-3">
-    
-                    </span>
-                  </button>
-                </div>
-                <div id="myNav" style='background-color: #f0d5a3' class="overlay">
-                  <div class="overlay-content">
-                    <a style='color: f0d5a3;' href="{% url "web.home" %}">Главная страница</a>
-                    <a style='color: f0d5a3;' href="{% url "web.catalog" %}">Каталог</a>
-                    
-                  </div>
-                </div>
-              </div>
-            </nav>
-          </div>
-        </header>
-        <section class="contact_section layout_padding">
-          <div class="container ">
-            <h2 style=' color:#7d612c'>
-              Наш каталог
-            </h2>
-          </div>
-            <div class="container">
-                
-                    {% comment %} <main> {% endcomment %}
-                      <table class='blur-background' >
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Фото</th>
-                            <th>Бренд</th>
-                            <th>Имя</th>
-                            <th>Т.Вода</th>
-                            <th>Категория</th>
-                            <th>Цена</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for i in parfume_obj %}
-                          <tr style="border: 1px solid black">
-                            
-                            
-                            <td style = 'background-color: #7d612c;color:white'>{{ forloop.counter}}</td>
-                            <td><img src = {{i.img.url}} style = 'width:70%; height:70%'></td>
-                            <td>{{i.brand}}</td>
-                            <td>{{i.name}}</td>
-                            {% if i.toilet_water == 'Нет' %}
-                              <td style = 'color:red;'>{{i.toilet_water}}</td>
-                            {% else %}
-                              <td style = 'color:green;'>{{i.toilet_water}}</td>
-                            {% endif %}
-                            <td>{{i.category}}</td>
-                            <td class="price-column">
-                              <button  class="show-variations-button" onclick="toggleVariations('variations{{forloop.counter}}')">Смотреть</button>
-                              <div class="price-variations" id="variations{{forloop.counter}}">
-                              {% for j in i.volumes.all %}
-                                <p>{{ j.volum_ml }}Ml - {{j.price}}TMT </p>
-                              {% empty %}
-                                <p>Пока пусто</p>
-                              {% endfor %}
-                              </div>
-                            </td>
-                          </tr>
-                          {% endfor %}
-                      
-                  
-                          <!-- Add more rows as needed -->
-                        </tbody>
-                      </table>                        
-                    {% comment %} </main> {% endcomment %}
 
-                    
-                    <div class="paginator">
-
-
-                      {% if parfume_obj.has_previous %}
-                        <a class='paginator' href="?page=1">Начало</a>
-                        <a class='paginator' href="?page={{parfume_obj.previous_page_number}}">‹‹‹</a>          
-                      {% endif %}
-
-
-                      {% for i in parfume_obj.paginator.page_range %}
-                        
-                        {% if parfume_obj.number == i %}
-                            <a class='paginator' class="active" >{{i}}</a>
-                        {% else %}
-                            <a class='paginator' href="?page={{ i}}">{{i}}</a>
-                        {% endif %}
-
-                      {% endfor %}
-                      
-                      {% if parfume_obj.has_next %}
-                        <a class='paginator' href="?page={{parfume_obj.next_page_number}}"> ›››</a>
-                      {% endif %}
-
-                      {% if parfume_obj.has_next %}
-                        <a class='paginator' href="?page={{pag.num_pages}}">Конец</a>
-                      {% endif %}
-
-                    </div>
+    <!-- header section starts -->
+    <header class="header_section" style='background-color:#d4b589;'>
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url "web.home" %}">
+            <span style='color: #7d612c'>Virus Oil</span>
+          </a>
+          <div class="" id="">
+            <div class="custom_menu-btn">
+              <button onclick="openNav()">
+                <span class="s-1"></span>
+                <span class="s-2"></span>
+                <span class="s-3"></span>
+              </button>
             </div>
-        </div>
-        </section>
-    </div>
-    <script>
-      function toggleVariations(id) {
-        var variationsDiv = document.getElementById(id);
-        if (variationsDiv.style.display === "none") {
-          variationsDiv.style.display = "block";
-        } else {
-          variationsDiv.style.display = "none";
-        }
-      }
-      </script>
+            <div id="myNav" style='background-color: #f0d5a3' class="overlay">
+              <div class="overlay-content">
+                <a style='color: f0d5a3;' href="{% url "web.home" %}">Главная страница</a>
+                <a style='color: f0d5a3;' href="{% url "web.catalog" %}">Каталог</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
     
+
+
+  <div class="hero_area">
+    <section class="contact_section layout_padding">
+      
+      
+        
+
+      
+
+      <div class="container">
+
+        {% include "main/landing_page/filter.html" %}
+
+
+        <h2 style='color:#7d612c'>Наш каталог</h2>
+      </div>
+      <div class="container">
+        <!-- Catalog table and other content -->
+        <table class='blur-background'>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Фото</th>
+              <th>Бренд</th>
+              <th>Имя</th>
+              <th>Т.Вода</th>
+              <th>Категория</th>
+              <th>Цена</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% if parfume_obj %}
+                {% for i in parfume_obj %}
+                    <tr style="border: 1px solid black">
+                        <td style='background-color: #7d612c;color:white'>{{ forloop.counter }}</td>
+                        <td>
+                            {% if i.img %}
+                                <img src="{{ i.img.url }}" style='width:70%; height:70%'>
+                            {% else %}
+                                <p>No Image Available</p>
+                            {% endif %}
+                        </td>
+                        <td>{{ i.brand }}</td>
+                        <td>{{ i.name }}</td>
+                        {% if i.toilet_water == 'Нет' %}
+                            <td style='color:red;'>{{ i.toilet_water }}</td>
+                        {% else %}
+                            <td style='color:green;'>{{ i.toilet_water }}</td>
+                        {% endif %}
+                        <td>{{ i.category }}</td>
+                        <td class="price-column">
+                            <button class="show-variations-button" onclick="toggleVariations('variations{{ forloop.counter }}')">Смотреть</button>
+                            <div class="price-variations" id="variations{{ forloop.counter }}" style="display: none;">
+                                {% for j in i.volumes.all %}
+                                    <p>{{ j.volum_ml }}Ml - {{ j.price }}TMT</p>
+                                {% empty %}
+                                    <p>Пока пусто</p>
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7">No items found</td>
+                </tr>
+            {% endif %}
+        </tbody>
+        
+        </table>
+
+        <div class="paginator">
+          {% if parfume_obj.has_previous %}
+              <a class="paginator" href="?page=1&search={{ search_query }}&category={{ filter_category }}">Начало</a>
+              <a class="paginator" href="?page={{ parfume_obj.previous_page_number }}&search={{ search_query }}&category={{ filter_category }}">‹‹‹</a>
+          {% endif %}
+      
+          {% for i in perfume_page_range %}
+              {% if parfume_obj.number == i %}
+                  <a class="paginator active">{{ i }}</a>
+              {% else %}
+                  <a class="paginator" href="?page={{ i }}&search={{ search_query }}&category={{ filter_category }}">{{ i }}</a>
+              {% endif %}
+          {% endfor %}
+      
+          {% if parfume_obj.has_next %}
+              <a class="paginator" href="?page={{ parfume_obj.next_page_number }}&search={{ search_query }}&category={{ filter_category }}">›››</a>
+              <a class="paginator" href="?page={{ parfume_obj.paginator.num_pages }}&search={{ search_query }}&category={{ filter_category }}">Конец ({{ parfume_obj.paginator.num_pages }})</a>
+          {% endif %}
+      </div>
+      
+      </div> 
+    </section>
+  </div> <!-- Closing the hero_area div here -->
   
-  <!-- info section -->
-
-
-
-  <!-- end info section -->
-
-
-  <!-- footer section -->
-
-  <!-- end  footer section -->
-
+  <script>
+    function toggleVariations(id) {
+      var variationsDiv = document.getElementById(id);
+      variationsDiv.style.display = (variationsDiv.style.display === "none") ? "block" : "none";
+    }
+  </script>
 
   <script type="text/javascript" src="{% static "main/landing_page/js/jquery-3.4.1.min.js" %}"></script>
   <script type="text/javascript" src="{% static 'main/landing_page/js/bootstrap.js' %}"></script>
   <script type="text/javascript" src="{% static "main/landing_page/js/custom.js" %}"></script>
   <script type="text/javascript" src="{% static "main/landing_page/table.js" %}"></script>
-
-
 
 </body>
 

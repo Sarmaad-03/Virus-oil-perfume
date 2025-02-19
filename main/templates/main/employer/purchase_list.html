@@ -36,12 +36,13 @@
 					<table class="table table-bordered">
 						<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Клиент</th>
-							<th scope="col">Купленный парфюм</th>
-							<th scope="col">Объем в Мл</th>
-							<th scope="col">Заплатил</th>
-							<th scope="col">Дата сделки</th>
+							<th style='font-size: 13px' scope="col">#</th>
+							<th style='font-size: 13px' scope="col">Клиент</th>
+							<th style='font-size: 13px' scope="col">Купленный парфюм</th>
+							<th style='font-size: 13px' scope="col">Объем в Мл</th>
+							<th style='font-size: 13px' scope="col">Заплатил</th>
+							<th style='font-size: 13px' scope="col">Дата сделки</th>
+							<th style='font-size: 13px' scope="col">Удалить</th>
 							
 						
 						</tr>
@@ -50,12 +51,13 @@
 						{% for i in prod_pag %}
 						<tr>
 							
-							<th scope="row">{{ forloop.counter }}</th>
-							<th scope="row"><a href="{% url "employer_customer_detail" i.user.id %}">{{i.user.first_name}} {{i.user.last_name}}</a></th>
-							<th scope="row">'{{i.parfume.parfum.name}}' by {{i.parfume.parfum.brand}}</th>
-							<th scope="row">{{i.parfume.volum_ml}} ml</th>
-							<th scope="row">{{i.parfume.price}} TMT</th>
-							<th scope="row">{{i.created_at|date:'d.m.Y'}}</th>
+							<th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+							<th style='font-size: 13px' scope="row"><a href="{% url "employer_customer_detail" i.user.id %}">{{i.user.first_name}} {{i.user.last_name}}</a></th>
+							<th style='font-size: 13px' scope="row">'{{i.parfume.parfum.name}}' by {{i.parfume.parfum.brand}}</th>
+							<th style='font-size: 13px' scope="row">{{i.parfume.volum_ml}} ml</th>
+							<th style='font-size: 13px' scope="row">{{i.parfume.price}} TMT</th>
+							<th style='font-size: 13px' scope="row">{{i.created_at|date:'d.m.Y'}}</th>
+							<th style='font-size: 13px' scope="row"><a href={% url "employer_purchase_delete" i.id %} class='btn btn-danger' style='color: white;' >Удалить</a></th>
 							
 							
 						</tr>
@@ -64,32 +66,38 @@
 					</table>
                     
                     <div class="btn-toolbar justify-content-center mb-15">
-                        <div class="btn-group">
-                            {% if prod_pag.has_previous %}
-                            <a href="?page={{ prod_pag.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
-                            {% endif %}
-                            
-                            {% for i in prod_pag.paginator.page_range %}
-
-                                {% if prod_pag.number == i %}
-                                <span class="btn btn-primary current">{{i}}</span>
-                                
-                                {% else %}
-                                <a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
-                                
-                                {% endif %}
-
-                            {% endfor %}
-
-                            {% if prod_pag.has_next %}
-                            <a href="?page={{ prod_pag.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
-                            {% endif %}
-                        </div>
-                    </div>
+						<div class="btn-toolbar justify-content-center mb-15">
+							<div class="btn-group">
+								{% if prod_pag.has_previous %}
+									<a href="?page={{ prod_pag.previous_page_number }}" class="btn btn-outline-primary prev">
+										<i class="fa fa-angle-double-left"></i>
+									</a>
+								{% else %}
+									<a href="#" class="btn btn-outline-danger prev disabled">
+										<i class="fa fa-angle-double-left"></i>
+									</a>
+								{% endif %}
+						
+								{% for i in page_range %}
+									{% if prod_pag.number == i %}
+										<span class="btn btn-primary current">{{ i }}</span>
+									{% else %}
+										<a href="?page={{ i }}" class="btn btn-outline-primary">{{ i }}</a>
+									{% endif %}
+								{% endfor %}
+						
+								{% if prod_pag.has_next %}
+									<a href="?page={{ prod_pag.next_page_number }}" class="btn btn-outline-primary next">
+										<i class="fa fa-angle-double-right"></i>
+									</a>
+								{% else %}
+									<a href="#" class="btn btn-outline-danger next disabled">
+										<i class="fa fa-angle-double-right"></i>
+									</a>
+								{% endif %}
+							</div>
+						</div>
+					</div>
 
 				</div>
 

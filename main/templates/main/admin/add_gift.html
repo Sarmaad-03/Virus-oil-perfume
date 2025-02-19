@@ -3,7 +3,7 @@
 {% load static %}
 
 
-		{% block content %}
+		{% block content %} 
 
 		
 			<div class="xs-pd-20-10 pd-ltr-20">
@@ -28,23 +28,21 @@
                 <div class="pd-20 card-box mb-30">
 					<div class="clearfix">
 						<div class="pull-left">
-							<h4 class="text-blue h4">Форма добавления подарка</h4>
+							<h4 class="text-blue h4">Форма добавления подарка для клиента {{client.first_name}} {{client.last_name}}</h4>
 							<p class="mb-30">Заполните все бланки</p>
 						</div>
 					</div>
                    
                     <hr>
-					<form method='POST' action={% url "admin_give_gift" id %}>{% csrf_token %}
-						<div>
-							{% for i in form.errors %}
-								{{i}}
-							{% endfor %}
-						</div>
-						
+					<form id="search-form-mu">{% csrf_token %}
+						<input type="hidden" id="hidden-id" value="{{ client.id }}">
+						<input type="hidden" id="hidden-categ" value="admin">
 						<div class="form-group row">
+							
 							<label class="col-sm-12 col-md-2 col-form-label">Выберите парфюм</label>
 							<div class="col-sm-12 col-md-10">
-								{{form.parfume}}
+								<input type="text" class='form-control' id="perfume-search-input-mu" autocomplete="off" placeholder="Найти парфюм..." requird>
+								<div id="perfume-suggestions-mu"></div>
 							</div>
 						</div>
 						
@@ -62,7 +60,7 @@
  
 				</div>
 			</div>
-		
+			<script src="{% static "main/admin/gift_search.js" %}"></script>
 
 		{% endblock %}
 

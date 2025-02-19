@@ -31,78 +31,151 @@
             <div class="pd-20 card-box mb-30">
                 <h2>Полная информация {{customer.first_name}} {{customer.last_name}}</h2>
                 <hr>
+
                 <div class="pd-20 card-box">
-                    <h4 class="mb-30 h4">Описание</h4>
-                    <dl class="row">
-                        <dt class="col-sm-3">Полное имя</dt>
-                        <dd class="col-sm-9">
-                            {{customer.first_name}} {{customer.last_name}}
-                        </dd>
+                    
+                    <div class="tab">
+                        <ul class="nav nav-pills" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link text-blue active" data-toggle="tab" href="#home5" role="tab" aria-selected="true">Информация</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-blue" data-toggle="tab" href="#profile5" role="tab" aria-selected="false">Сделки</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-blue" data-toggle="tab" href="#gifts" role="tab" aria-selected="false">Подарки</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="home5" role="tabpanel">
+                                <div class="pd-20 card-box">
+ 
+                                    <dl class="row">
+                                        <dt class="col-sm-3">Полное имя</dt>
+                                        <dd class="col-sm-9">
+                                            {{customer.first_name}} {{customer.last_name}}
+                                        </dd>
+                
+                                        <dt class="col-sm-3">Номер телефона</dt>
+                                        <dd class="col-sm-9">
+                                            {{customer.number}}
+                                        </dd>
+                                        
+                                        <dt class="col-sm-3">Дата Рождения</dt>
+                                        <dd class="col-sm-9">
+                                            <p>
+                                                {{customer.birthday|date:'d.m.Y'}}
+                                            </p>
+                                            
+                                        </dd>
+                
+                                        <dt class="col-sm-3">Заплатил</dt>
+                                        <dd class="col-sm-9">
+                                            {{customer.bought}} TMT
+                                        </dd>
+                                        
+                                        <dt class="col-sm-3">Купленный парфюм</dt>
+                                        <dd class="col-sm-9">
+                                            {{customer.purchases.all.count}} 
+                                        </dd>  
 
-                        <dt class="col-sm-3">Номер телефона</dt>
-                        <dd class="col-sm-9">
-                            {{customer.number}}
-                        </dd>
-                        
-                        <dt class="col-sm-3">Дата Рождения</dt>
-                        <dd class="col-sm-9">
-                            <p>
-                                {{customer.birthday|date:'d.m.Y'}}
-                            </p>
-                            
-                        </dd>
-
-                        <dt class="col-sm-3">Заплатил</dt>
-                        <dd class="col-sm-9">
-                            {{customer.bought}} TMT
-                        </dd>
-
-                        <dt class="col-sm-3 text-truncate">
-                            Купленный парфюм 
-                            <p>Количество - ({{customer.purchases.all.count}}) </p>
-                        </dt>
-                        <dd class="col-sm-9">
-                            <ul class="list-group">
-                                {% for i in customer.purchases.all %}
-                                <li class="list-group-item">{{i.parfume}} |  {{i.parfume.price}} TMT</li>
-                                {% endfor %}
-
-                            </ul>
-
-                            
-                                
-                            
-                        </dd>
-                        <dt class="col-sm-3 text-truncate">
-                            Подарки 
-                            <p>Количество - ({{customer.gifts.all.count}}) </p>
-                        </dt>
-                        {% if customer.gifts %}
-                            <dd class="col-sm-9">
-                                <ul class="list-group">
-                                    {% for i in customer.gifts.all %}
-                                    <li class="list-group-item">{{i.parfume}} |  {{i.parfume.price}} TMT</li>
-                                    {% endfor %}
-
-                                </ul>
-                            </dd>
-                        {% else %}
-                            <dd class="col-sm-9">
-                                <ul class="list-group">
-                                    
-                                    <li class="list-group-item">Пусто</li>
-                                    
-                                </ul>
-                            </dd>
-                        {% endif %}
+                                        <dt class="col-sm-3">Подарки</dt>
+                                        <dd class="col-sm-9">
+                                            {{customer.gifts.all.count}}
+                                        </dd>
 
 
-                        
-                    </dl>
+                                                         
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile5" role="tabpanel">
+                                <div class="pd-20">
+                                    <hr>
+                                    <h4 class="text-blue h4">Форма добавления сделки для {{customer.first_name}} {{customer.last_name}}</h4>
+                                    <hr>
+                                    <form id="search-form-mu">{% csrf_token %}
+                                        <input type="hidden" id="hidden-id" value="{{ customer.id }}">
+                                        <div class="form-group row">
+                                            
+                                            <label class="col-sm-12 col-md-2 col-form-label">Выберите парфюм</label>
+                                            <div class="col-sm-12 col-md-10">
+                                                <input type="text" class='form-control' id="perfume-search-input-mu" autocomplete="off" placeholder="Найти парфюм..." requird>
+                                                <div id="perfume-suggestions-mu"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-success btn-lg btn-block">
+                                            Потвердить
+                                        </button>
+                                    </form>
+
+                                    <hr>
+
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style='font-size: 13px' scope="col">#</th>
+                                            <th style='font-size: 13px' scope="col">Купленный парфюм</th>
+                                            <th style='font-size: 13px' scope="col">Объем в Мл</th>
+                                            <th style='font-size: 13px' scope="col">Заплатил</th>
+                                            <th style='font-size: 13px' scope="col">Дата сделки</th>
+                                            <th style='font-size: 13px' scope="col">Удалить</th>
+                                        
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in purchases %}
+                                        <tr>
+                                            
+                                            <th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+                                            <th style='font-size: 13px' scope="row">'{{i.parfume.parfum.name}}' от {{i.parfume.parfum.brand}}</th>
+                                            <th style='font-size: 13px' scope="row">{{i.parfume.volum_ml}} ml</th>
+                                            <th style='font-size: 13px' scope="row">{{i.parfume.price}} TMT</th>
+                                            <th style='font-size: 13px' scope="row">{{i.created_at|date:'d.m.Y'}}</th>
+                                            <th style='font-size: 13px' scope="row"><a href={% url "admin_purchase_delete" i.id %} class='btn btn-danger' style='color: white;' >Удалить</a></th>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="gifts" role="tabpanel">
+                                <div class="pd-20">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style='font-size: 13px' scope="col">#</th>
+                                            <th style='font-size: 13px' scope="col">Парфюм</th>
+                                            <th style='font-size: 13px' scope="col">Объем в Мл</th>
+                                            <th style='font-size: 13px' scope="col">Цена</th>
+                                            <th style='font-size: 13px' scope="col">Дата вручения</th>
+                                            <th style='font-size: 13px' scope="col">Удалить</th>
+                                        
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for j in gifts %}
+                                        <tr>
+                                            
+                                            <th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+                                            <th style='font-size: 13px' scope="row">'{{j.parfume.parfum.name}}' от {{j.parfume.parfum.brand}}</th>
+                                            <th style='font-size: 13px' scope="row">{{j.parfume.volum_ml}} ml</th>
+                                            <th style='font-size: 13px' scope="row">{{j.parfume.price}} TMT</th>
+                                            <th style='font-size: 13px' scope="row">{{j.created_at|date:'d.m.Y'}}</th>
+                                            <th style='font-size: 13px' scope="row"><a href={% url "admin_gift_delete" j.id %} class='btn btn-danger' style='color: white;' >Удалить</a></th>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
                 </div>
-
-            <hr>
-            </div>
                           
 
 
@@ -113,7 +186,7 @@
             </div>
         </div>
     
-
+        <script src="{% static "main/admin/details_search.js" %}"></script>
     {% endblock %}
 
 

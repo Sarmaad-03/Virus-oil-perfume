@@ -64,32 +64,36 @@
 					</table>
 					<hr>
 					<div class="btn-toolbar justify-content-center mb-15">
-                        <div class="btn-group">
-                            {% if prod_pag.has_previous %}
-                            <a href="?page={{ prod_pag.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
-                            {% endif %}
-                            
-                            {% for i in prod_pag.paginator.page_range %}
-
-                                {% if prod_pag.number == i %}
-                                <span class="btn btn-primary current">{{i}}</span>
-                                
-                                {% else %}
-                                <a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
-                                
-                                {% endif %}
-
-                            {% endfor %}
-
-                            {% if prod_pag.has_next %}
-                            <a href="?page={{ prod_pag.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
-                            {% endif %}
-                        </div>
-                    </div>
+						<div class="btn-group">
+							{% if prod_pag.has_previous %}
+								<a href="?page={{ prod_pag.previous_page_number }}" class="btn btn-outline-primary prev">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-danger prev disabled">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% endif %}
+					
+							{% for i in page_range %}
+								{% if prod_pag.number == i %}
+									<span class="btn btn-primary current">{{ i }}</span>
+								{% else %}
+									<a href="?page={{ i }}" class="btn btn-outline-primary">{{ i }}</a>
+								{% endif %}
+							{% endfor %}
+					
+							{% if prod_pag.has_next %}
+								<a href="?page={{ prod_pag.next_page_number }}" class="btn btn-outline-primary next">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-danger next disabled">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% endif %}
+						</div>
+					</div>
 				</div>
 
 					

@@ -34,28 +34,26 @@
 					<table class="table table-bordered">
 						<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Имя на Сайте</th>
-							<th scope="col">Имя</th>
-							<th scope="col">Фамилия</th>
-							<th scope="col">Дата Рождения</th>
-							<th scope="col">Номер</th>
-							
-							<th scope="col">Удалить</th>
+							<th style='font-size: 13px' scope="col">#</th>
+							<th style='font-size: 13px' scope="col">Имя на Сайте</th>
+							<th style='font-size: 13px' scope="col">Имя</th>
+							<th style='font-size: 13px' scope="col">Фамилия</th>
+							<th style='font-size: 13px' scope="col">Дата Рождения</th>
+							<th style='font-size: 13px' scope="col">Номер</th>	
+							<th style='font-size: 13px' scope="col">Удалить</th>
 						</tr>
 						</thead>
 						<tbody>
 						{% for j in prod_pag %}
 						<tr>
 							
-							<th scope="row">{{ forloop.counter }}</th>
-							<th scope="row">@{{j.user.username}}</th>
-							<th scope="row">{{j.first_name}}</th>
-							<th scope="row">{{j.last_name}}</th>
-							<th scope="row">{{j.bithday|date:'d.m.Y'}}</th>
-							<th scope="row">{{j.number}}</th>
-							
-							<th scope="row"> <a class='btn btn-danger' style='color: white;' href="{% url "admin_employer_delete" j.id %}">Удалить</a></th>
+							<th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+							<th style='font-size: 13px' scope="row">@{{j.user.username}}</th>
+							<th style='font-size: 13px' scope="row">{{j.first_name}}</th>
+							<th style='font-size: 13px' scope="row">{{j.last_name}}</th>
+							<th style='font-size: 13px' scope="row">{{j.bithday|date:'d.m.Y'}}</th>
+							<th style='font-size: 13px' scope="row">{{j.number}}</th>
+							<th style='font-size: 13px' scope="row"> <a class='btn btn-danger' style='color: white;' href="{% url "admin_employer_delete" j.id %}">Удалить</a></th>
 							
 						</tr>
 						{% endfor %}
@@ -66,30 +64,35 @@
 				<div class="btn-toolbar justify-content-center mb-15">
 					<div class="btn-group">
 						{% if prod_pag.has_previous %}
-						<a href="?page={{ prod_pag.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
+							<a href="?page={{ prod_pag.previous_page_number }}" class="btn btn-outline-primary prev">
+								<i class="fa fa-angle-double-left"></i>
+							</a>
 						{% else %}
-						<a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
+							<a href="#" class="btn btn-outline-danger prev disabled">
+								<i class="fa fa-angle-double-left"></i>
+							</a>
 						{% endif %}
-						
-						{% for i in prod_pag.paginator.page_range %}
-
+				
+						{% for i in page_range %}
 							{% if prod_pag.number == i %}
-							<span class="btn btn-primary current">{{i}}</span>
-							
+								<span class="btn btn-primary current">{{ i }}</span>
 							{% else %}
-							<a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
-							
+								<a href="?page={{ i }}" class="btn btn-outline-primary">{{ i }}</a>
 							{% endif %}
-
 						{% endfor %}
-
+				
 						{% if prod_pag.has_next %}
-						<a href="?page={{ prod_pag.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
+							<a href="?page={{ prod_pag.next_page_number }}" class="btn btn-outline-primary next">
+								<i class="fa fa-angle-double-right"></i>
+							</a>
 						{% else %}
-						<a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
+							<a href="#" class="btn btn-outline-danger next disabled">
+								<i class="fa fa-angle-double-right"></i>
+							</a>
 						{% endif %}
 					</div>
 				</div>
+				
 
 				</div>
 							  

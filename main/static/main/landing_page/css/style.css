@@ -1,3 +1,36 @@
+#custom-search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+.custom-form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.search-box {
+  flex: 6; /* 70% ширины */
+}
+
+.filter-box {
+  flex: 4; /* 30% ширины */
+}
+
+.custom-form-control {
+  width: 100%;
+  border: 2px solid #7d612c
+}
+
+.custom-btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+
 body {
   font-family: "Poppins", sans-serif;
   color: #0c0c0c;

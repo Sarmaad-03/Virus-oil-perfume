@@ -25,6 +25,23 @@
 						
 					</div>
 				</div>
+
+				<form action="{% url "customer_searcher" category='emp' %}" method="GET">
+					<div class="page-header">
+						<div class="title">
+							<h4>Поиск</h4>
+						</div>
+						<div class="form-group">
+							<label>Имя</label>
+							<input class="form-control" type="text" name="first_name" placeholder="Введите имя">
+						</div>
+						<div class="form-group">
+							<label>Фамилия</label>
+							<input class="form-control" type="text" name="last_name" placeholder="Введите фамилию">
+						</div>
+						<button class="btn btn-success btn-lg btn-block">Подтвердить</button>
+					</div>
+				</form>
 		
 				<hr>
 				
@@ -34,14 +51,13 @@
 					<table class="table table-bordered">
 						<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Имя</th>
-							
-							<th scope="col">Дата Рождения</th>
-							<th scope="col">Купленный парфюм</th>
-							<th scope="col">Подарки</th>
-							<th scope="col">Заплатил</th>
-							<th scope="col">Узнать больше</th>
+							<th style='font-size: 13px' scope="col">#</th>
+							<th style='font-size: 13px' scope="col">Имя</th>
+							<th style='font-size: 13px' scope="col">Дата Рождения</th>
+							<th style='font-size: 13px' scope="col">Купленный парфюм</th>
+							<th style='font-size: 13px' scope="col">Подарки</th>
+							<th style='font-size: 13px' scope="col">Заплатил</th>
+							<th style='font-size: 13px' scope="col">Узнать больше</th>
 							
 						</tr>
 						</thead>
@@ -49,20 +65,20 @@
 							{% for j in prod_pag %}
 							<tr>
 								
-								<th scope="row">{{ forloop.counter }}</th>
-								<th scope="row">{{j.first_name}} {{j.last_name}}</th>
-							
-								<th scope="row">{{j.birthday|date:'d.m.Y'}}</th>
-								{% if j.purchases.all.count|mod:5 == 0 and j.purchases.all.count > 0  %}
-									<th style='color: red;' scope="row"><a style='color: red;' href={% url "employer_give_gift" j.id %}>{{j.purchases.all.count}}(+1 Подарок)</a></th>
-	
+								<th style='font-size: 13px' scope="row">{{ forloop.counter }}</th>
+								<th style='font-size: 13px' scope="row">{{j.first_name}} {{j.last_name}}</th>
+								<th style='font-size: 13px' scope="row">{{j.birthday|date:'d.m.Y'}}</th>
+								{% if j.give_gift  %}
+									<th style='font-size: 13px' style='color: red;' scope="row"><a  style='color: red;' href={% url "employer_give_gift" j.id %}>{{j.purchases.all.count}}</a>
+										<a class='btn btn-danger' style='color: white;' href={% url "employer_give_gift" j.id %}>(+1 Подарок) </a>
+									</th>
 								{% else %}
-									<th scope="row">{{j.purchases.all.count}}</th>
+									<th style='font-size: 13px' scope="row">{{j.purchases.all.count}}</th>
 								{% endif %}
-								<th scope="row">{{j.gifts.all.count}}</th>
-								<th scope="row">{{j.bought}} TMT</th>
-								<th scope="row"> <a href={% url "employer_customer_detail" j.id %}>...</a></th>
-								
+								<th style='font-size: 13px' scope="row">{{j.gifts.all.count}}</th>
+								<th style='font-size: 13px' scope="row">{{j.bought}} TMT</th>
+								<th style='font-size: 13px' scope="row"> <a class='btn btn-success' href={% url "employer_customer_detail" j.id %}>Смотреть</a></th>
+
 								
 							</tr>
 							{% endfor %}
@@ -71,30 +87,36 @@
 
 				<hr>
 				<div class="btn-toolbar justify-content-center mb-15">
-					<div class="btn-group">
-						{% if prod_pag.has_previous %}
-						<a href="?page={{ prod_pag.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
-						{% else %}
-						<a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
-						{% endif %}
-						
-						{% for i in prod_pag.paginator.page_range %}
-
-							{% if prod_pag.number == i %}
-							<span class="btn btn-primary current">{{i}}</span>
-							
+					<div class="btn-toolbar justify-content-center mb-15">
+						<div class="btn-group">
+							{% if prod_pag.has_previous %}
+								<a href="?page={{ prod_pag.previous_page_number }}" class="btn btn-outline-primary prev">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
 							{% else %}
-							<a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
-							
+								<a href="#" class="btn btn-outline-danger prev disabled">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
 							{% endif %}
-
-						{% endfor %}
-
-						{% if prod_pag.has_next %}
-						<a href="?page={{ prod_pag.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
-						{% else %}
-						<a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
-						{% endif %}
+					
+							{% for i in page_range %}
+								{% if prod_pag.number == i %}
+									<span class="btn btn-primary current">{{ i }}</span>
+								{% else %}
+									<a href="?page={{ i }}" class="btn btn-outline-primary">{{ i }}</a>
+								{% endif %}
+							{% endfor %}
+					
+							{% if prod_pag.has_next %}
+								<a href="?page={{ prod_pag.next_page_number }}" class="btn btn-outline-primary next">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-danger next disabled">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% endif %}
+						</div>
 					</div>
 				</div>
 

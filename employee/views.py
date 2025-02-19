@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -15,6 +16,23 @@ from django.core.paginator import (
 from customer.forms import CustomerCreationForm, GiftForm, PurchaseCreationForm
 
 
+
+
+
+
+def get_page_range(page_obj, max_pages=5):
+    """
+    Returns a range of page numbers to display, centered around the current page.
+    max_pages determines how many page numbers to show at a time.
+    """
+    start_index = max(page_obj.number - max_pages // 2, 1)
+    end_index = min(start_index + max_pages - 1, page_obj.paginator.num_pages)
+    
+    # Adjust start index if we're at the end of the page list
+    if end_index - start_index < max_pages - 1:
+        start_index = max(end_index - max_pages + 1, 1)
+
+    return range(start_index, end_index + 1)
 
 
 def index(request):
@@ -62,11 +80,13 @@ def parfume_list(request):
     except EmptyPage:
         prod_pag =paginator.page(paginator.num_pages)
 
+    page_range = get_page_range(prod_pag, 5)
 
     context = {
         'title': 'Parfumes List',
         'prod_pag': prod_pag,
         'all_parfume': all_parfume,
+        'page_range': page_range,
     } 
 
     return render(request, 'main/employer/parfume_list.html', context)
@@ -85,10 +105,13 @@ def customer_list(request):
     except EmptyPage:
         prod_pag =paginator.page(paginator.num_pages)
 
+    page_range = get_page_range(prod_pag, 5)
+    
     context = {
         'title': 'Customers List',
         'prod_pag': prod_pag,
-        'all_customers': all_customers
+        'all_customers': all_customers,
+        'page_range': page_range,
     }
 
     return render(request, 'main/employer/customer_list.html', context)
@@ -105,7 +128,7 @@ def add_customer(request):
             messages.success(
                 request, 'Клиент успешно добавлен.'
                 )
-            return redirect('employer_customer_list')
+            return redirect('employer_make_purchase')
         
         else:
             messages.warning(
@@ -146,6 +169,7 @@ def purchases_list(request):
 
     paginator = Paginator(all_purchases, 10)
     page_number = request.GET.get('page')
+    
 
     try:
         prod_pag = paginator.page(page_number)
@@ -154,12 +178,14 @@ def purchases_list(request):
     except EmptyPage:
         prod_pag =paginator.page(paginator.num_pages)
 
+    page_range = get_page_range(prod_pag, 5)
 
 
     context = {
         'title': 'Purchase List', 
         'all_purchases': all_purchases,
-        'prod_pag':prod_pag
+        'prod_pag':prod_pag,
+        'page_range':page_range,
     }
     return render(request, 'main/employer/purchase_list.html', context)  
 
@@ -199,9 +225,13 @@ def make_purchase(request):
 
 def customer_detail(request, id):
     customer = UserAccount.objects.get(id = id)
+    purchases = Purchase.objects.filter(user=customer)
+    gifts = Gift.objects.filter(user = customer)
     context = {
         'title': 'Customers Detail',
-        'customer': customer
+        'customer': customer,
+        'purchases': purchases,
+        'gifts': gifts,
     }
     return render(request, 'main/employer/customer_detail.html', context)
 
@@ -218,12 +248,13 @@ def gift_list(request):
     except EmptyPage:
         prod_pag =paginator.page(paginator.num_pages)
 
-
+    page_range = get_page_range(prod_pag, 5)
 
     context = {
         'title': 'Gift List',
         'prod_pag': prod_pag,
-        'num': num
+        'num': num,
+        'page_range': page_range,
     }
     return render(request, 'main/employer/gift_list.html', context)
 
@@ -240,27 +271,29 @@ def gift_delete(request, id):
                     request, 'Ошибка при удалении.'
                     )
         
-    return redirect('employer_gift_list')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def purchase_delete(request, id):
+    try:
+        obj = Purchase.objects.get(id=id)
+        obj.delete()
+        messages.success(
+                    request, 'Успешно удалено.'
+                    )
+    except:
+        
+        messages.warning(
+                    request, 'Ошибка при удалении.'
+                    )
+        
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def give_gift(request, id):
     client = UserAccount.objects.get(id = id)
-    if request.method == 'POST':
-        p_id = request.POST.get('parfume')
-        p = Parfume_volume.objects.get(id = p_id )
-        messages.success(
-                    request, 'Успешно добавлено.'
-                    )
 
-        Gift.objects.create(
-            user=client,
-            parfume = p)
-        return redirect('employer_customer_list')
-    
-    form = GiftForm(request.POST or None)
     context = {
         'title':'Adding Gift',
-        'form': form,
-        'id': id
+        'client':client,
     }
 
     return render(request, 'main/employer/add_gift.html', context)

@@ -16,4 +16,6 @@ urlpatterns = [
     path('employers_gift_list/', gift_list, name='employer_gift_list'),
     path('employers_give_gift/<str:id>/', give_gift, name='employer_give_gift'),
     path('employers_gift_delete/<str:id>/', gift_delete, name='employer_gift_delete'),
+    # purchase
+    path('employers_purchase_delete/<str:id>/', purchase_delete, name='employer_purchase_delete'),
 ]

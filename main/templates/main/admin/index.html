@@ -45,7 +45,7 @@
 						<div class="card-box height-100-p widget-style3">
 							<div class="d-flex flex-wrap">
 								<div class="widget-data">
-									<div class="weight-700 font-24 text-dark">{{all_customers.count}}</div>
+									<div class="weight-700 font-24 text-dark">{{clients}}</div>
 									<div class="font-14 text-secondary weight-500">
 										<a href = '{% url "admin_customer_list" %}' >Все клиенты</a> 
 									</div>
@@ -63,7 +63,7 @@
 						<div class="card-box height-100-p widget-style3">
 							<div class="d-flex flex-wrap">
 								<div class="widget-data">
-									<div class="weight-700 font-24 text-dark">{{all_parfume.count}}</div>
+									<div class="weight-700 font-24 text-dark">{{perfumes}}</div>
 									<div class="font-14 text-secondary weight-500">
 										<a href = '{% url "admin_parfume_list" %}' >Парфюм</a> 
 									</div>
@@ -94,8 +94,8 @@
 					</div>
 				</div>
 
-				<hr>
-				<div class="pd-20 card-box mb-30">
+				{% comment %} <hr> {% endcomment %}
+				{% comment %} <div class="pd-20 card-box mb-30">
 					<h2>Список Парфюма в наличие</h2>
 					
 					<hr>
@@ -129,12 +129,44 @@
 						{% endfor %}
 							</tbody>
 					</table>
-				</div>
+					<div class="btn-toolbar justify-content-center mb-15">
+						<div class="btn-group">
+							{% if prod_pag_perfume.has_previous %}
+								<a href="?perfume_page={{ prod_pag_perfume.previous_page_number }}" class="btn btn-outline-primary prev">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-primary prev disabled">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% endif %}
+					
+							{% for i in perfume_page_range %}
+								{% if prod_pag_perfume.number == i %}
+									<span class="btn btn-primary current">{{ i }}</span>
+								{% else %}
+									<a href="?perfume_page={{ i }}" class="btn btn-outline-primary">{{ i }}</a>
+								{% endif %}
+							{% endfor %}
+					
+							{% if prod_pag_perfume.has_next %}
+								<a href="?perfume_page={{ prod_pag_perfume.next_page_number }}" class="btn btn-outline-primary next">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-primary next disabled">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% endif %}
+						</div>
+					</div>
+					
+				</div> {% endcomment %}
 										
 				<br>
-				<hr>
+				{% comment %} <hr> {% endcomment %}
 				
-				<div class="pd-20 card-box mb-30">
+				{% comment %} <div class="pd-20 card-box mb-30">
 					<h2>Список клиентов</h2>
 					<hr>
 					<table class="table table-bordered">
@@ -161,9 +193,11 @@
 								<th scope="row">{{j.birthday|date:'d.m.Y'}}</th>
 								
 	
-								{% if j.purchases.all.count|mod:5 == 0 and j.purchases.all.count != 0 %}
-									<th style='color: red;' scope="row"><a style='color: red;' href={% url "admin_give_gift" j.id %}>{{j.purchases.all.count}}(+1 Подарок)</a></th>
-	
+								{% if j.give_gift %}
+								<th style='color: red;' scope="row"><a  style='color: red;' href={% url "admin_give_gift" j.id %}>{{j.purchases.all.count}}   </a>
+									<a class='btn btn-danger' style='color: white;' href={% url "admin_give_gift" j.id %}>   (+1 Подарок) </a>
+								</th>
+
 								{% else %}
 									<th scope="row">{{j.purchases.all.count}}</th>
 								{% endif %}
@@ -177,44 +211,49 @@
 						</tbody>
 					</table>
 					<div class="btn-toolbar justify-content-center mb-15">
-                        <div class="btn-group">
-                            {% if prod_pag_customer.has_previous %}
-                            <a href="?page={{ prod_pag_customer.previous_page_number}}" class="btn btn-outline-primary prev"><i class="fa fa-angle-double-left"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary prev disabled"><i class="fa fa-angle-double-left"></i></a>
-                            {% endif %}
-                            
-                            {% for i in prod_pag_customer.paginator.page_range %}
+						<div class="btn-group">
+							{% if prod_pag_customer.has_previous %}
+								<a href="?page={{ prod_pag_customer.previous_page_number }}" class="btn btn-outline-primary prev">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-primary prev disabled">
+									<i class="fa fa-angle-double-left"></i>
+								</a>
+							{% endif %}
+					
+							{% for i in customer_page_range %}
+								{% if prod_pag_customer.number == i %}
+									<span class="btn btn-primary current">{{ i }}</span>
+								{% else %}
+									<a href="?page={{ i }}" class="btn btn-outline-primary">{{ i }}</a>
+								{% endif %}
+							{% endfor %}
+					
+							{% if prod_pag_customer.has_next %}
+								<a href="?page={{ prod_pag_customer.next_page_number }}" class="btn btn-outline-primary next">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-primary next disabled">
+									<i class="fa fa-angle-double-right"></i>
+								</a>
+							{% endif %}
+						</div>
+					</div>
+					
+				</div> {% endcomment %}
 
-                                {% if prod_pag_customer.number == i %}
-                                <span class="btn btn-primary current">{{i}}</span>
-                                
-                                {% else %}
-                                <a href="?page={{ i}}" class="btn btn-outline-primary">{{i}}</a>
-                                
-                                {% endif %}
-
-                            {% endfor %}
-
-                            {% if prod_pag_customer.has_next %}
-                            <a href="?page={{ prod_pag_customer.next_page_number}}" class="btn btn-outline-primary next"><i class="fa fa-angle-double-right"></i></a>
-                            {% else %}
-                            <a href="#" class="btn btn-outline-primary next disabled"><i class="fa fa-angle-double-right "></i></a>
-                            {% endif %}
-                        </div>
-                    </div>
 				</div>
 
-				</div>
-
-				<hr>
+				{% comment %} <hr> {% endcomment %}
 							  
 
 
 					
 				<div class="footer-wrap pd-20 mb-20 card-box">
 					Virus Oil Parfume - Admin Panel
- 
+	
 				</div>
 			</div>
 		</div>
